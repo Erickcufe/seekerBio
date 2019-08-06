@@ -7,7 +7,7 @@
 seeker_gen_pathway(x)
 }
 \arguments{
-\item{x}{A gen symbol in character}
+\item{x}{A gen symbol in character or more that one gen in a data.frame}
 }
 \value{
 A data.frame with the pathways of the gen from reactome.org
@@ -18,5 +18,6 @@ the data.frame contains the ID, name of pathway and p value
 }
 \examples{
 MAPT <- seeker_gen_pathway("MAPT")
-
+df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
+seeker_gen_pathway(df)
 }

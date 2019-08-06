@@ -4,7 +4,7 @@
 #'the data.frame contains the ID, name of pathway and p value
 #'
 #'
-#' @param x A gen symbol in character
+#' @param x A gen symbol in character or more that one gen in a data.frame
 #'
 #'
 #' @return
@@ -12,9 +12,13 @@
 #'
 #' @export
 #'
+#' @import
+#' jsonlite
+#'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")
-#'
+#'df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
+#'seeker_gen_pathway(df)
 
 seeker_gen_pathway <- function(x) {
   UseMethod("seeker_gen_pathway")
@@ -40,8 +44,10 @@ seeker_gen_pathway.character <- function(x) {
 
 
 seeker_gen_pathway.data.frame <- function(x) {
-  mydf <- list()
-  for (i in 1:nrow(x)) {
+  # mydf <- data.frame()
+  mydf <- x[NULL,]
+  for (i in seq_len(nrow(x))) {
+
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
@@ -50,18 +56,22 @@ seeker_gen_pathway.data.frame <- function(x) {
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
   datos <- fromJSON(url_reactome)
   paths<-datos[["pathways"]]
-  paths_select <- data.frame(ID=paths$stId,
+  paths_select <- data.frame(Gen = rep(x[i,] ,length(paths$stId)),
+                             ID=paths$stId,
                              Path_name=paths$name,
                              pvalue=paths$entities$pValue)
-  mydf[i] <- paths_select
+  mydf <- rbind(mydf, paths_select)
+
   }
 
   mypaths <- data.frame(mydf)
-  colnames(mypaths) <- c("ID", "Path_name", "pvalue")
-  return(paths_select)
+  colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
+  return(mypaths)
 }
 
 
+df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
+a<- seeker_gen_pathway(df)
 # salio <- scrad_gen_pathway("APOE")
 # salio[which.min(salio$pvalue),]
 #
