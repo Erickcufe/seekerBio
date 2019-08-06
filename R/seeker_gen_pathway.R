@@ -18,9 +18,7 @@
 #'Erick Cuevas-Fernández
 #'
 #' @export
-seeker_gen_pathway <- function(x) {
- UseMethod("seeker_gen_pathway")
-   }
+#' seeker_gen_pathway
 #'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")

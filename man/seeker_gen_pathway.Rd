@@ -5,8 +5,6 @@
 \title{Seeker the pathway of a gen or genes}
 \usage{
 seeker_gen_pathway(x)
-
-seeker_gen_pathway(x)
 }
 \arguments{
 \item{x}{A gen symbol}
