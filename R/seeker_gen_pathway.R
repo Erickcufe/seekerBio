@@ -71,8 +71,8 @@ seeker_gen_pathway.data.frame <- function(x) {
 }
 
 
-df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
-a<- seeker_gen_pathway(df)
+# df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
+# a<- seeker_gen_pathway(df)
 # salio <- scrad_gen_pathway("APOE")
 # salio[which.min(salio$pvalue),]
 #
