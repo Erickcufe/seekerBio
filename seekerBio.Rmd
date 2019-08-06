@@ -8,22 +8,12 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-
-
 ```{r setup}
 library(seekerBio)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
 ```{r}
-MAPT <- seeker_gen_pathway("MAPT")
+seeker_gen_pathway("MAPT")
 ```
 
 
