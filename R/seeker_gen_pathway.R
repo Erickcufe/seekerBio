@@ -49,6 +49,25 @@ seeker_gen_pathway.character <- function(x) {
   return(paths_select)
 }
 
+seeker_gen_pathway.factor <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  server="https://reactome.org/AnalysisService/identifier/"
+  pValue_Reactome= list()
+  name_Reactome= list()
+  pathID_Reactome = list()
+  informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
+  url_reactome <- file.path(server,informacion_Reactome, sep = "")
+  datos <- fromJSON(url_reactome)
+  paths<-datos[["pathways"]]
+  paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
+                             ID=paths$stId,
+                             Path_name=paths$name,
+                             pvalue=paths$entities$pValue)
+  return(paths_select)
+}
+
+
 
 seeker_gen_pathway.data.frame <- function(x) {
 
@@ -81,7 +100,7 @@ seeker_gen_pathway.data.frame <- function(x) {
 
 seeker_gen_pathway.default <- function(x) {
   stop(
-    "Don't know how to make bizzaro <",
+    "Don't know how to make seeker_gen_pathway <",
     class(x)[[1]], ">",
     call. = FALSE
   )
