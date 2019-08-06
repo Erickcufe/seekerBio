@@ -40,13 +40,10 @@
 #'MAPT <- seeker_gen_pathway("MAPT")
 #'df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
 #'seeker_gen_pathway(df)
-
 seeker_gen_pathway <- function(x) {
   UseMethod("seeker_gen_pathway")
 
 }
-
-
 
 seeker_gen_pathway.character <- function(x) {
 
@@ -84,8 +81,6 @@ seeker_gen_pathway.factor <- function(x) {
   return(paths_select)
 }
 
-
-
 seeker_gen_pathway.data.frame <- function(x) {
 
   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
@@ -112,7 +107,6 @@ seeker_gen_pathway.data.frame <- function(x) {
   colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
   return(mypaths)
 }
-
 
 seeker_gen_pathway.default <- function(x) {
   stop(
