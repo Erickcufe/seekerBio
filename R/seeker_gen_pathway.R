@@ -17,8 +17,6 @@
 #' @author
 #'Erick Cuevas-Fernández
 #'
-#' @export
-#' seeker_gen_pathway
 #'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")
