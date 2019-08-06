@@ -2,15 +2,35 @@
 % Please edit documentation in R/seeker_gen_pathway.R
 \name{seeker_gen_pathway}
 \alias{seeker_gen_pathway}
+\alias{seeker_gen_pathway.character}
+\alias{seeker_gen_pathway.factor}
+\alias{seeker_gen_pathway.data.frame}
+\alias{seeker_gen_pathway.default}
 \title{Seeker the pathway of a gen or genes}
 \usage{
 seeker_gen_pathway(x)
+
+\method{seeker_gen_pathway}{character}(x)
+
+\method{seeker_gen_pathway}{factor}(x)
+
+\method{seeker_gen_pathway}{data.frame}(x)
+
+\method{seeker_gen_pathway}{default}(x)
 }
 \arguments{
 \item{x}{A gen symbol}
 }
 \value{
 A data.frame with the pathways of the gen from reactome.org
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
 }
 \description{
 seeker_gene_pathway is a generic function to produce a data.frame with the pathways associated with the input gen,

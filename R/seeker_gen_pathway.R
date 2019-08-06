@@ -22,81 +22,97 @@
 #'MAPT <- seeker_gen_pathway("MAPT")
 #'df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
 #'seeker_gen_pathway(df)
-#'@export
+#' @rdname seeker_gen_pathway
+#' @export seeker_gen_pathway
 seeker_gen_pathway <- function(x) {
   UseMethod("seeker_gen_pathway")
 
 }
 
-# seeker_gen_pathway.character <- function(x) {
-#
-#   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
-#   server="https://reactome.org/AnalysisService/identifier/"
-#   pValue_Reactome= list()
-#   name_Reactome= list()
-#   pathID_Reactome = list()
-#   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
-#   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-#   datos <- jsonlite::fromJSON(url_reactome)
-#   paths<-datos[["pathways"]]
-#   paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
-#                              ID=paths$stId,
-#                               Path_name=paths$name,
-#                              pvalue=paths$entities$pValue)
-#    return(paths_select)
-#  }
-#
-# seeker_gen_pathway.factor <- function(x) {
-#
-#   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
-#   server="https://reactome.org/AnalysisService/identifier/"
-#   pValue_Reactome= list()
-#   name_Reactome= list()
-#   pathID_Reactome = list()
-#   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
-#   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-#   datos <- jsonlite::fromJSON(url_reactome)
-#   paths<-datos[["pathways"]]
-#   paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
-#                              ID=paths$stId,
-#                              Path_name=paths$name,
-#                              pvalue=paths$entities$pValue)
-#   return(paths_select)
-# }
-#
-# seeker_gen_pathway.data.frame <- function(x) {
-#
-#   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
-#   mydf <- x[NULL,]
-#   for (i in seq_len(nrow(x))) {
-#
-#   server="https://reactome.org/AnalysisService/identifier/"
-#   pValue_Reactome= list()
-#   name_Reactome= list()
-#   pathID_Reactome = list()
-#   informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
-#   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-#   datos <- jsonlite::fromJSON(url_reactome)
-#   paths<-datos[["pathways"]]
-#   paths_select <- data.frame(Gen = rep(x[i,] ,length(paths$stId)),
-#                              ID=paths$stId,
-#                              Path_name=paths$name,
-#                              pvalue=paths$entities$pValue)
-#   mydf <- rbind(mydf, paths_select)
-#
-#   }
-#
-#   mypaths <- data.frame(mydf)
-#   colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
-#   return(mypaths)
-# }
-#
-# seeker_gen_pathway.default <- function(x) {
-#   stop(
-#     "Don't know how to make seeker_gen_pathway <",
-#     class(x)[[1]], ">",
-#     call. = FALSE
-#   )
-# }
-#
-#
+#' @return \code{NULL}
+#'
+#' @rdname seeker_gen_pathway
+#' @export
+seeker_gen_pathway.character <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  server="https://reactome.org/AnalysisService/identifier/"
+  pValue_Reactome= list()
+  name_Reactome= list()
+  pathID_Reactome = list()
+  informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
+  url_reactome <- file.path(server,informacion_Reactome, sep = "")
+  datos <- jsonlite::fromJSON(url_reactome)
+  paths<-datos[["pathways"]]
+  paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
+                             ID=paths$stId,
+                              Path_name=paths$name,
+                             pvalue=paths$entities$pValue)
+   return(paths_select)
+}
+
+#' @return \code{NULL}
+#'
+#' @rdname seeker_gen_pathway
+#' @export
+seeker_gen_pathway.factor <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  server="https://reactome.org/AnalysisService/identifier/"
+  pValue_Reactome= list()
+  name_Reactome= list()
+  pathID_Reactome = list()
+  informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
+  url_reactome <- file.path(server,informacion_Reactome, sep = "")
+  datos <- jsonlite::fromJSON(url_reactome)
+  paths<-datos[["pathways"]]
+  paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
+                             ID=paths$stId,
+                             Path_name=paths$name,
+                             pvalue=paths$entities$pValue)
+  return(paths_select)
+}
+
+#' @return \code{NULL}
+#'
+#' @rdname seeker_gen_pathway
+#' @export
+seeker_gen_pathway.data.frame <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  mydf <- x[NULL,]
+  for (i in seq_len(nrow(x))) {
+
+  server="https://reactome.org/AnalysisService/identifier/"
+  pValue_Reactome= list()
+  name_Reactome= list()
+  pathID_Reactome = list()
+  informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
+  url_reactome <- file.path(server,informacion_Reactome, sep = "")
+  datos <- jsonlite::fromJSON(url_reactome)
+  paths<-datos[["pathways"]]
+  paths_select <- data.frame(Gen = rep(x[i,] ,length(paths$stId)),
+                             ID=paths$stId,
+                             Path_name=paths$name,
+                             pvalue=paths$entities$pValue)
+  mydf <- rbind(mydf, paths_select)
+
+  }
+
+  mypaths <- data.frame(mydf)
+  colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
+  return(mypaths)
+}
+
+#' @return \code{NULL}
+#'
+#' @rdname seeker_gen_pathway
+#' @export
+seeker_gen_pathway.default <- function(x) {
+  stop(
+    "Don't know how to make seeker_gen_pathway <",
+    class(x)[[1]], ">",
+    call. = FALSE
+  )
+}
+
