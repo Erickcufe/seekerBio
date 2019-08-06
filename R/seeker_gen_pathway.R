@@ -15,6 +15,10 @@
 #' @import
 #' jsonlite
 #'
+#'@author
+#'Cuevas-Fernandez Erick
+#'
+#'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")
 #'df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
@@ -28,6 +32,8 @@ seeker_gen_pathway <- function(x) {
 
 
 seeker_gen_pathway.character <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
@@ -45,6 +51,8 @@ seeker_gen_pathway.character <- function(x) {
 
 
 seeker_gen_pathway.data.frame <- function(x) {
+
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
   # mydf <- data.frame()
   mydf <- x[NULL,]
   for (i in seq_len(nrow(x))) {
@@ -69,6 +77,16 @@ seeker_gen_pathway.data.frame <- function(x) {
   colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
   return(mypaths)
 }
+
+
+seeker_gen_pathway.default <- function(x) {
+  stop(
+    "Don't know how to make bizzaro <",
+    class(x)[[1]], ">",
+    call. = FALSE
+  )
+}
+
 
 
 # df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
