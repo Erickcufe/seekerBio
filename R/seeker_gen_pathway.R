@@ -1,4 +1,4 @@
-#' Seek the pathway of a gen or genes
+#' Seeker the pathway of a gen or genes
 #'
 #'seeker_gene_pathway is a generic function to produce a data.frame with the pathways associated with the input gen,
 #'the data.frame contains the ID, name of pathway and p value. The function invokes particular methods wich depend on the class of the first argument
@@ -14,10 +14,13 @@
 #'jsonlite fromJSON
 #'
 #'
-#'@author
+#' @author
 #'Erick Cuevas-Fernández
 #'
-#'
+#' @export
+seeker_gen_pathway <- function(x) {
+ UseMethod("seeker_gen_pathway")
+   }
 #'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")
@@ -64,8 +67,6 @@ seeker_gen_pathway.factor <- function(x) {
                              pvalue=paths$entities$pValue)
   return(paths_select)
 }
-
-
 
 seeker_gen_pathway.data.frame <- function(x) {
 

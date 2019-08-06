@@ -2,8 +2,10 @@
 % Please edit documentation in R/seeker_gen_pathway.R
 \name{seeker_gen_pathway}
 \alias{seeker_gen_pathway}
-\title{Seek the pathway of a gen or genes}
+\title{Seeker the pathway of a gen or genes}
 \usage{
+seeker_gen_pathway(x)
+
 seeker_gen_pathway(x)
 }
 \arguments{
