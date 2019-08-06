@@ -10,13 +10,30 @@
 #' @return
 #'A data.frame with the pathways of the gen from reactome.org
 #'
-#' @export
+#' @importFrom
+#'jsonlite fromJSON
 #'
-#' @import
-#' jsonlite
+#' @export
+#'seeker_gen_pathway.character <- function(x) {
+#'
+#' message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+#' server="https://reactome.org/AnalysisService/identifier/"
+#' pValue_Reactome= list()
+#' name_Reactome= list()
+#' pathID_Reactome = list()
+#' informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
+#' url_reactome <- file.path(server,informacion_Reactome, sep = "")
+#' datos <- jsonlite::fromJSON(url_reactome)
+#' paths<-datos[["pathways"]]
+#' paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
+#'                            ID=paths$stId,
+#'                            Path_name=paths$name,
+#'                            pvalue=paths$entities$pValue)
+#' return(paths_select)
+#' }
 #'
 #'@author
-#'Cuevas-Fernandez Erick
+#'Erick Cuevas-Fernández
 #'
 #'
 #' @examples
@@ -40,7 +57,7 @@ seeker_gen_pathway.character <- function(x) {
   pathID_Reactome = list()
   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-  datos <- fromJSON(url_reactome)
+  datos <- jsonlite::fromJSON(url_reactome)
   paths<-datos[["pathways"]]
   paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
                              ID=paths$stId,
@@ -58,7 +75,7 @@ seeker_gen_pathway.factor <- function(x) {
   pathID_Reactome = list()
   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-  datos <- fromJSON(url_reactome)
+  datos <- jsonlite::fromJSON(url_reactome)
   paths<-datos[["pathways"]]
   paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
                              ID=paths$stId,
@@ -81,7 +98,7 @@ seeker_gen_pathway.data.frame <- function(x) {
   pathID_Reactome = list()
   informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-  datos <- fromJSON(url_reactome)
+  datos <- jsonlite::fromJSON(url_reactome)
   paths<-datos[["pathways"]]
   paths_select <- data.frame(Gen = rep(x[i,] ,length(paths$stId)),
                              ID=paths$stId,
