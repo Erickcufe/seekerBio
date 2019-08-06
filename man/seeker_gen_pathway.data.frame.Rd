@@ -4,7 +4,7 @@
 \alias{seeker_gen_pathway.data.frame}
 \title{Class data.frame}
 \usage{
-\method{seeker_gen_pathway}{[data.frame]}(x)
+\method{seeker_gen_pathway}{data.frame}(x)
 }
 \arguments{
 \item{x}{A genes symbols in dataframe}
@@ -13,7 +13,7 @@
 A data.frame with the pathways of the gen from reactome.org
 }
 \description{
-seek_gen_pathway for the class [data.frame]
+seek_gen_pathway for the class data.frame
 }
 \examples{
 df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
