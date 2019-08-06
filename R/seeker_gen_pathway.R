@@ -117,18 +117,3 @@ seeker_gen_pathway.default <- function(x) {
 }
 
 
-
-# df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
-# a<- seeker_gen_pathway(df)
-# salio <- scrad_gen_pathway("APOE")
-# salio[which.min(salio$pvalue),]
-#
-# .x<-df[1,]
-#
-# map_dfr(df, scrad_gen_pathway~(.x))
-
-# to prube
-# df<-data.frame(Gene=c("MAPT","APOE","MMP12"))
-# df_1 <- as.character(df$Gene)
-# Gen<-as.matrix(df_1)
-# library(jsonlite)
