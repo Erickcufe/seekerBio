@@ -1,12 +1,14 @@
 #' Class data.frame
 #'
-#'seek_gen_pathway for the class [data.frame]
+#'seek_gen_pathway for the class data.frame
 #'
 #' @param x A genes symbols in dataframe
 #'
 #' @return
 #' A data.frame with the pathways of the gen from reactome.org
 #' @export
+#'
+#'
 #'
 #' @importFrom
 #' jsonlite fromJSON

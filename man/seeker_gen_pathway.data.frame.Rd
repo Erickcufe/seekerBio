@@ -4,7 +4,7 @@
 \alias{seeker_gen_pathway.data.frame}
 \title{Class data.frame}
 \usage{
-\method{seeker_gen_pathway}{data.frame}(x)
+\method{seeker_gen_pathway}{[data.frame]}(x)
 }
 \arguments{
 \item{x}{A genes symbols in dataframe}
