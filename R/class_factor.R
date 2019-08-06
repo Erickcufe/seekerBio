@@ -14,6 +14,7 @@
 #'
 #' @examples
 #'seeker_gen_pathway(factor("MAPT"))
+#'@export
 seeker_gen_pathway.factor <- function(x) {
 
   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))

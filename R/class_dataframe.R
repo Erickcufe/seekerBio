@@ -17,6 +17,7 @@
 #' @examples
 #' df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
 #'seeker_gen_pathway(df)
+#'@export
 seeker_gen_pathway.data.frame <- function(x) {
 
   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))

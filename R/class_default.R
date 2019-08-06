@@ -10,6 +10,7 @@
 #'
 #' @examples
 #' This method return an error message
+#' @export
 seeker_gen_pathway.default <- function(x) {
   stop(
     "Don't know how to make seeker_gen_pathway <",
