@@ -1,0 +1,30 @@
+---
+title: "seekerBio"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r setup}
+library(seekerBio)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+MAPT <- seeker_gen_pathway("MAPT")
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
