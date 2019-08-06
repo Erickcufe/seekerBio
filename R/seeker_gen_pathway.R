@@ -22,6 +22,7 @@
 #'MAPT <- seeker_gen_pathway("MAPT")
 #'df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
 #'seeker_gen_pathway(df)
+
 seeker_gen_pathway <- function(x) {
   UseMethod("seeker_gen_pathway")
 
