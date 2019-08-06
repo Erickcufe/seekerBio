@@ -36,7 +36,8 @@ seeker_gen_pathway.character <- function(x) {
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
   datos <- fromJSON(url_reactome)
   paths<-datos[["pathways"]]
-  paths_select <- data.frame(ID=paths$stId,
+  paths_select <- data.frame(Gen = rep(x ,length(paths$stId)),
+                             ID=paths$stId,
                              Path_name=paths$name,
                              pvalue=paths$entities$pValue)
   return(paths_select)
