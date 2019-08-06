@@ -72,7 +72,6 @@ seeker_gen_pathway.factor <- function(x) {
 seeker_gen_pathway.data.frame <- function(x) {
 
   message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
-  # mydf <- data.frame()
   mydf <- x[NULL,]
   for (i in seq_len(nrow(x))) {
 

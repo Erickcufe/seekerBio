@@ -13,3 +13,7 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
     jsonlite
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

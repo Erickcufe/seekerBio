@@ -1,0 +1,33 @@
+---
+title: "seekerBio"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{seekerBio}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## This package have functions to find the molecular pathway of a gen searching in reactome.org
+```{r setup}
+library(seekerBio)
+```
+
+Examples of function seeker_gen_pathway
+```{r}
+df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
+seeker_gen_pathway(df)
+```
+
+
+```{r}
+seeker_gen_pathway("MAPT")
+```
+
+
