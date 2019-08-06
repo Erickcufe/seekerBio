@@ -1,10 +1,10 @@
 #' Seek the pathway of a gen or genes
 #'
-#'This function return a data.frame with the pathways associated with the input gen,
-#'the data.frame contains the ID, name of pathway and p value
+#'seeker_gene_pathway is a generic function to produce a data.frame with the pathways associated with the input gen,
+#'the data.frame contains the ID, name of pathway and p value. The function invokes particular methods wich depend on the class of the first argument
 #'
 #'
-#' @param x A gen symbol in character or more that one gen in a data.frame
+#' @param x A gen symbol
 #'
 #'
 #' @return
