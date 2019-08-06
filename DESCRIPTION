@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Erick",
            family = "Cuevas-Fernandez",
            role = c("aut", "cre"),
-           email = "erickcufe94@gmail.com"))
+           email = "erickcufe94@gmail.com")
 Description: This is an R package that have function to find gene information in multiple databases
 License: What license it uses
 Encoding: UTF-8
