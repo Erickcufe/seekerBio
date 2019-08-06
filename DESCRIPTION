@@ -1,13 +1,12 @@
 Package: seekerBio
-Title: What the Package Does (One Line, Title Case)
+Title: Seek gen information in databases
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Erick",
+           family = "Cuevas-Fernandez",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "erickcufe94@gmail.com"))
+Description: This is an R package that have function to find gene information in multiple databases
 License: What license it uses
 Encoding: UTF-8
 LazyData: true
