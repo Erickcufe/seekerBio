@@ -17,7 +17,13 @@
 #'
 
 seeker_gen_pathway <- function(x) {
-  library(jsonlite)
+  UseMethod("seeker_gen_pathway")
+
+}
+
+
+
+seeker_gen_pathway.character <- function(x) {
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
@@ -33,6 +39,27 @@ seeker_gen_pathway <- function(x) {
 }
 
 
+seeker_gen_pathway.data.frame <- function(x) {
+  mydf <- list()
+  for (i in 1:nrow(x)) {
+  server="https://reactome.org/AnalysisService/identifier/"
+  pValue_Reactome= list()
+  name_Reactome= list()
+  pathID_Reactome = list()
+  informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
+  url_reactome <- file.path(server,informacion_Reactome, sep = "")
+  datos <- fromJSON(url_reactome)
+  paths<-datos[["pathways"]]
+  paths_select <- data.frame(ID=paths$stId,
+                             Path_name=paths$name,
+                             pvalue=paths$entities$pValue)
+  mydf[i] <- paths_select
+  }
+
+  mypaths <- data.frame(mydf)
+  colnames(mypaths) <- c("ID", "Path_name", "pvalue")
+  return(paths_select)
+}
 
 
 # salio <- scrad_gen_pathway("APOE")
