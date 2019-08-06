@@ -1,27 +1,94 @@
+#' seeker gwas
+#'
+#'seeker_gwas is a generic function that allow to download a data.frame of all Genome-wide
+#'Association Study of the input trait
+#'
+#' @param trait A keyword to search in GWAS
+#'
+#' @return
+#' A data.frame with all the information from https://www.ebi.ac.uk/gwas/home
+#'
+#' @export
+#'
+#' @importFrom
+#' stringr str_split
+#'
+#' @examples
+#' seeker_gwas("multiple sclerosis")
+#' seeker_gwas("fontotemporal")
+#' @rdname seeker_gwas
+#' @export seeker_gwas
 seeker_gwas <- function(trait) {
 
   UseMethod("seeker_gwas")
 
 }
 
+#' @return \code{NULL}
+#'
+#' @rdname seeker_gwas
+#' @export
 seeker_gwas.character <- function(trait){
-  # keyword_GWAS<-trait
-  url_GWAS<-paste0("https://www.ebi.ac.uk/gwas/api/search/downloads?q=text:%22",
-                       trait)
-  GWAS<-read.delim(url_GWAS)
-  separarcoma<-str_split(GWAS$REPORTED.GENE.S., pattern = fixed(","), n = Inf)
-  separarcoma<-as.matrix(separarcoma)
 
-  p_separar <- sapply(separarcoma, length)
-  o_separar <- seq_len(max(p_separar))
-  k_separar <- t(sapply(separarcoma, "[", i=o_separar))
-  k_separar <- data.frame(k_separar, headers=F)
-  names(k_separar)[1:length(k_separar)] <- c("GeneSymbol")
+  trait <-  strsplit(trait, " ")
+
+  if (!is.na(trait[[1]][3])){
+    stop("You must specified your trait with TWO words")
+
+    } else {
+
+    if (!is.na(trait[[1]][2])) {
+
+      print("two word")
+      # trait <- "multiple sclerosis"
+
+      keyword_GWAS<-trait[[1]][1]
+      keyword_2GWAS<-trait[[1]][2]
+
+      url_GWAS<-paste0("https://www.ebi.ac.uk/gwas/api/search/downloads?q=text:%22",
+                       keyword_GWAS,"%20",keyword_2GWAS,
+                       "%22&pvalfilter=&orfilter=&betafilter=&datefilter=&genomicfilter=&traitfilter[]=&genotypingfilter[]=&dateaddedfilter=&efo=true&facet=association")
+
+      GWAS<-read.delim(url_GWAS)
+      separarcoma<-str_split(GWAS$REPORTED.GENE.S., pattern = fixed(","), n = Inf)
+      separarcoma<-as.matrix(separarcoma)
+
+      p_separar <- sapply(separarcoma, length)
+      o_separar <- seq_len(max(p_separar))
+      k_separar <- t(sapply(separarcoma, "[", i=o_separar))
+      k_separar <- data.frame(k_separar, headers=F)
+      names(k_separar)[1:length(k_separar)] <- c("GeneSymbol")
 
 
-  binding<-data.frame(k_separar[,1])
-  colnames(binding)<-"GeneSymbol"
-  ENSEMBL_GWAS<-cbind(binding, GWAS)
+      binding<-data.frame(k_separar[,1])
+      colnames(binding)<-"GeneSymbol"
+      ENSEMBL_GWAS<-cbind(binding, GWAS)
+    } else {
+
+      if (is.na(trait[[1]][2])){
+
+        print("one_words")
+        url_GWAS<-paste0("https://www.ebi.ac.uk/gwas/api/search/downloads?q=text:%22",
+                         trait,
+                         "%22&pvalfilter=&orfilter=&betafilter=&datefilter=&genomicfilter=&traitfilter[]=&genotypingfilter[]=&dateaddedfilter=&efo=true&facet=association")
+        GWAS<-read.delim(url_GWAS)
+        separarcoma<-str_split(GWAS$REPORTED.GENE.S., pattern = fixed(","), n = Inf)
+        separarcoma<-as.matrix(separarcoma)
+
+        p_separar <- sapply(separarcoma, length)
+        o_separar <- seq_len(max(p_separar))
+        k_separar <- t(sapply(separarcoma, "[", i=o_separar))
+        k_separar <- data.frame(k_separar, headers=F)
+        names(k_separar)[1:length(k_separar)] <- c("GeneSymbol")
+
+
+        binding<-data.frame(k_separar[,1])
+        colnames(binding)<-"GeneSymbol"
+        ENSEMBL_GWAS<-cbind(binding, GWAS)
+
+      }
+    }
+  }
 
   return(ENSEMBL_GWAS)
 }
