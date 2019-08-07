@@ -18,7 +18,7 @@ seeker_pathway_order <- function(pathways){
   message(paste(Sys.time(), 'empezando a correr `seeker_pathway_order`'))
   #### LOOPS PARA AGRUPAR
   for(i in 1:nrow(pathways)){
-    for (j in 1:nrow(metabolism)){
+    for (j in 1:nrow(metabolism_seeker)){
       pathways$General_pathway[i]<-"NA"
     }
   }
