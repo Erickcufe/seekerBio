@@ -8,8 +8,6 @@
 #' @return
 #' A data.frame with all the information from https://www.ebi.ac.uk/gwas/home
 #'
-#' @export
-#'
 #' @importFrom
 #' stringr str_split
 #'
