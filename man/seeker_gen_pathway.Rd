@@ -7,6 +7,9 @@
 \alias{seeker_gen_pathway.data.frame}
 \alias{seeker_gen_pathway.default}
 \title{Seeker the pathway of a gen or genes}
+\source{
+https://reactome.org
+}
 \usage{
 seeker_gen_pathway(x)
 

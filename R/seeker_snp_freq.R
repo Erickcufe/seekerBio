@@ -1,7 +1,37 @@
+#' seeker Single Nucleotide Polymorphism frequency
+#'
+#'A generic function to search the population frequency of a specific study
+#'
+#' @param ID A Single Nucleotide Polymorphism ID ("rs") in character or data.frame
+#' @param study A study of population frequency. Default ("1000GENOMES:phase3")
+#'
+#' @return
+#' A data.frame with the allel frequency in all the population of the given study
+#'
+#' @source
+#' https://rest.ensembl.org
+#'
+#' @importFrom
+#' jsonlite fromJSON
+#'
+#'
+#'
+#' @examples
+#' seeker_snp_freq("rs56116432")
+#'
+#' df <- data.frame(c("rs56116432","rs10878307", "rs7133914", "rs11564148", "rs3761863", "rs10878245"))
+#' seeker_snp_freq(df)
+#'
+#' @rdname seeker_snp_freq
+#' @export seeker_snp_freq
 seeker_snp_freq <- function(ID, study = "1000GENOMES:phase_3") {
   UseMethod("seeker_snp_freq")
 }
 
+#' @return \code{NULL}
+#'
+#' @rdname seeker_snp_freq
+#' @export
 seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
   message(paste(Sys.time(), 'Running `seeker_snp_freq` for character'))
 
@@ -27,6 +57,10 @@ seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
   }
 }
 
+#' @return \code{NULL}
+#'
+#' @rdname seeker_snp_freq
+#' @export
 seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   message(paste(Sys.time(), 'Running `seeker_snp_freq` for data.frame'))
   ID1 <- as.matrix(ID)

@@ -17,6 +17,8 @@
 #' @author
 #'Erick Cuevas-Fernández
 #'
+#' @source
+#' https://reactome.org
 #'
 #' @examples
 #'MAPT <- seeker_gen_pathway("MAPT")
