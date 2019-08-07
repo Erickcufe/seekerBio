@@ -68,7 +68,7 @@ seeker_gwas.character <- function(trait){
       k_separar_2 <- t(sapply(separarcoma_2, "[", i=o_separar))
       k_separar_2 <- data.frame(k_separar_2, headers=F)
       names(k_separar_2)[1:length(k_separar_2)] <- c("GeneSymbol")
-      binding<-data.frame(k_separar_2[,1])
+      binding_2 <- data.frame(k_separar_2[,1])
 
       colnames(binding_2) <- "GeneSymbol"
       ENSEMBL_GWAS <- cbind(binding_2, GWAS)
