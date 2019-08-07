@@ -27,7 +27,7 @@ seeker_gwas <- function(trait) {
 #' @rdname seeker_gwas
 #' @export
 seeker_gwas.character <- function(trait){
-
+  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
   trait <-  strsplit(trait, " ")
 
   if (!is.na(trait[[1]][3])){
@@ -37,7 +37,7 @@ seeker_gwas.character <- function(trait){
 
     if (!is.na(trait[[1]][2])) {
 
-      print("two word")
+      print("two words")
       # trait <- "multiple sclerosis"
 
       keyword_GWAS<-trait[[1]][1]
@@ -65,7 +65,7 @@ seeker_gwas.character <- function(trait){
 
       if (is.na(trait[[1]][2])){
 
-        print("one_words")
+        print("one_word")
         url_GWAS<-paste0("https://www.ebi.ac.uk/gwas/api/search/downloads?q=text:%22",
                          trait,
                          "%22&pvalfilter=&orfilter=&betafilter=&datefilter=&genomicfilter=&traitfilter[]=&genotypingfilter[]=&dateaddedfilter=&efo=true&facet=association")

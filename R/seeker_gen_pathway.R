@@ -35,7 +35,11 @@ seeker_gen_pathway <- function(x) {
 #' @export
 seeker_gen_pathway.character <- function(x) {
 
-  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for character'))
+
+
+  if (length(x)==1){
+
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
@@ -48,7 +52,14 @@ seeker_gen_pathway.character <- function(x) {
                              ID=paths$stId,
                               Path_name=paths$name,
                              pvalue=paths$entities$pValue)
-   return(paths_select)
+  return(paths_select)
+  } else {
+
+    mydf <- data.frame(gene=x)
+    mypaths <- seeker_gen_pathway(mydf)
+    return(mypaths)
+  }
+
 }
 
 #' @return \code{NULL}
@@ -56,9 +67,9 @@ seeker_gen_pathway.character <- function(x) {
 #' @rdname seeker_gen_pathway
 #' @export
 seeker_gen_pathway.factor <- function(x) {
-
+  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for factor'))
   if (length(x)==1){
-  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
@@ -74,27 +85,8 @@ seeker_gen_pathway.factor <- function(x) {
   return(paths_select)
   } else {
 
-    mydf <- x[NULL,]
-    for (i in length(x)) {
-
-      server="https://reactome.org/AnalysisService/identifier/"
-      pValue_Reactome= list()
-      name_Reactome= list()
-      pathID_Reactome = list()
-      informacion_Reactome <- paste(x[i], "/projection", sep = "", collapse = NULL)
-      url_reactome <- file.path(server,informacion_Reactome, sep = "")
-      datos <- jsonlite::fromJSON(url_reactome)
-      paths<-datos[["pathways"]]
-      paths_select <- data.frame(Gen = rep(x[i] ,length(paths$stId)),
-                                 ID=paths$stId,
-                                 Path_name=paths$name,
-                                 pvalue=paths$entities$pValue)
-      mydf <- rbind(mydf, paths_select)
-
-    }
-
-    mypaths <- data.frame(mydf)
-    colnames(mypaths) <- c("Gen", "ID", "Path_name", "pvalue")
+    mydf <- data.frame(gene=x)
+    mypaths <- seeker_gen_pathway(mydf)
     return(mypaths)
   }
 }
@@ -106,7 +98,7 @@ seeker_gen_pathway.factor <- function(x) {
 #' @export
 seeker_gen_pathway.data.frame <- function(x) {
 
-  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for data.frame'))
 
   mydf <- x[NULL,]
   for (i in seq_len(nrow(x))) {
@@ -143,4 +135,6 @@ seeker_gen_pathway.default <- function(x) {
     call. = FALSE
   )
 }
+
+
 
