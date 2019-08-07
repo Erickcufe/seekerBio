@@ -102,7 +102,9 @@ seeker_gen_pathway.data.frame <- function(x) {
 
   mydf <- x[NULL,]
   for (i in seq_len(nrow(x))) {
-
+  if (x=="" | x=="NR") {
+    next()
+  }
   server="https://reactome.org/AnalysisService/identifier/"
   pValue_Reactome= list()
   name_Reactome= list()
