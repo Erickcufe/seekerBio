@@ -488,7 +488,7 @@ Metabolism <- c( "R-HSA-1430728","R-HSA-71387","R-HSA-71336","R-HSA-73843","R-HS
                  "R-HSA-9018682", "R-HSA-9020265", "R-HSA-9026395", "R-HSA-9018676", "R-HSA-9026286", "R-HSA-9026290", "R-HSA-9026403", "R-HSA-9027307", "R-HSA-9026766", "R-HSA-9026762", "R-HSA-2142753",
                  "R-HSA-2142670", "R-HSA-2162123", "R-HSA-2142691", "R-HSA-2142696", "R-HSA-2142688", "R-HSA-2142770", "R-HSA-2142712", "R-HSA-2142816" )
 metabolism_seeker <- data.frame(Metabolism,stringsAsFactors = F)
-# usethis::use_data(metabolism_seeker)
+# usethis::use_data(metabolism_seeker, overwrite = TRUE)
 
 Signal_Transduction <-  c( "R-HSA-162582", "R-HSA-9006925", "R-HSA-1257604", "R-HSA-6807070", "R-HSA-8948751",
                          "R-HSA-8943723", "R-HSA-8948700", "R-HSA-8948747", "R-HSA-8943724", "R-HSA-199418",
