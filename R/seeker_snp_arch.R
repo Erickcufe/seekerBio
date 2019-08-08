@@ -94,7 +94,7 @@ seeker_snp_arch.data.frame <- function(ID){
 
   mydf <- ID[NULL,]
   for(i in 1:length(ligas)){
-
+    print(i)
     r <- fromJSON(ligas[i])
     pop <- r[["mappings"]]
     pop_result <- data.frame(SNP = ID[i,], pop)
