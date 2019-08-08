@@ -40,7 +40,7 @@ A data.frame with the LD information of SNP in a specific population
 \code{NULL}
 }
 \description{
-seeker Single Nucleotide Polymorphism Linkage-Desequilibrium
+A function that returns LD values between the SNP and all other SNP in a window centered around the given SNP.
 }
 \examples{
 seeker_snp_ld("rs56116432")

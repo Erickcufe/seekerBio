@@ -1,5 +1,7 @@
 #' seeker Single Nucleotide Polymorphism Linkage-Desequilibrium
 #'
+#' A function that returns LD values between the SNP and all other SNP in a window centered around the given SNP.
+#'
 #' @param ID A Single Nucleotide Polymorphism ID ("rs") in character or data.frame
 #' @param population Population for which to compute LD. Default "1000GENOMES:phase_3:MXL"
 #' @param window_size Window size in kb. The maximum allowed value for the window size is 500 kb.
