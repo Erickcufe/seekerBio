@@ -10,8 +10,12 @@
 #' @importFrom
 #' jsonlite fromJSON
 #'
+#' @importFrom
+#' purrr map
+#'
 #' @author
 #' Erick Cuevas-Fernández
+#' Heriberto Manuel Rivera
 #'
 #' @source
 #' https://rest.ensembl.org
@@ -42,7 +46,7 @@ seeker_snp_arch.character <- function(ID){
 
     r <- fromJSON(ligas)
     pop <- r[["mappings"]]
-    pop_result <- data_frame(SNP = ID, pop)
+    pop_result <- data.frame(SNP = ID, pop)
 
     return(pop_result)
   } else {
@@ -69,7 +73,7 @@ seeker_snp_arch.factor <- function(ID){
 
     r <- fromJSON(ligas)
     pop <- r[["mappings"]]
-    pop_result <- data_frame(SNP = ID, pop)
+    pop_result <- data.frame(SNP = ID, pop)
 
     return(pop_result)
   } else {
@@ -92,16 +96,23 @@ seeker_snp_arch.data.frame <- function(ID){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
-  mydf <- ID[NULL,]
-  for(i in 1:length(ligas)){
-    print(i)
-    r <- fromJSON(ligas[i])
-    pop <- r[["mappings"]]
-    pop_result <- data.frame(SNP = ID[i,], pop)
+  contents <- purrr::map(ligas, safely(jsonlite::fromJSON))
+  contents_1 <- purrr::transpose(contents)
+  contents_request <- contents_1[["result"]]
 
+  mydf <- data.frame()
 
+  for (i in 1:length(contents_request)){
+
+    pop <- contents_request[[i]][["mappings"]]
+    if(!is.null(pop)){
+    pop_result <- data.frame(SNP = ID1[i], pop)
     mydf <- rbind(mydf, pop_result)
+    } else {
+      next()
+    }
+
   }
+
   return(mydf)
 }
-

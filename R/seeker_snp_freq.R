@@ -1,6 +1,6 @@
 #' seeker Single Nucleotide Polymorphism frequency
 #'
-#'A generic function to search the population frequency of a specific study
+#' A generic function to search the population frequency of a specific study
 #'
 #' @param ID A Single Nucleotide Polymorphism ID ("rs") in character or data.frame
 #' @param study A study of population frequency. Default ("1000GENOMES:phase3")
@@ -13,11 +13,13 @@
 #'
 #' @author
 #' Erick Cuevas-Fernández
+#' Heriberto Manuel Rivera
 #'
 #' @importFrom
 #' jsonlite fromJSON
 #'
-#'
+#' @importFrom
+#' purrr map
 #'
 #' @examples
 #' seeker_snp_freq("rs56116432")
@@ -99,18 +101,28 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
-  mydf <- ID[NULL,]
-  for(i in 1:length(ligas)){
+  contents <- purrr::map(ligas, safely(jsonlite::fromJSON))
+  contents_1 <- purrr::transpose(contents)
+  contents_request <- contents_1[["result"]]
 
-    r <- fromJSON(ligas[i])
-    pop <- r[["populations"]]
+  mydf <- data.frame()
+  for(i in 1:length(contents_request)){
 
-    seleccion <- stringr::str_detect(pop$population, study)
-    SNP <- c(rep(ID, length(pop[seleccion,])))
-    pop_result <- cbind(SNP = ID1[i], pop[seleccion,])
-    pop_result$submission_id <- NULL
+    pop <- contents_request[[i]][["populations"]]
 
-    mydf <- rbind(mydf, pop_result)
+    if (!is.null(pop)){
+
+      seleccion <- stringr::str_detect(pop$population, study)
+      SNP <- c(rep(ID, length(pop[seleccion,])))
+      pop_result <- cbind(SNP = ID1[i], pop[seleccion,])
+      pop_result$submission_id <- NULL
+
+      mydf <- rbind(mydf, pop_result)
+    } else{
+      next()
+    }
+
+
   }
   return(mydf)
 }

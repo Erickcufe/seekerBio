@@ -19,8 +19,12 @@
 #' @importFrom
 #' jsonlite fromJSON
 #'
+#' @importFrom
+#' purrr map
+#'
 #' @author
 #' Erick Cuevas-Fernández
+#' Heriberto Manuel Rivera
 #'
 #' @examples
 #'seeker_snp_ld("rs56116432")
@@ -92,7 +96,7 @@ seeker_snp_ld.factor <- function(ID, population = "1000GENOMES:phase_3:MXL",
 #' @rdname seeker_snp_ld
 #' @export
 seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
-                                     window_size = 500, d_prime = 0) {
+                                     window_size = 500, d_prime = 0){
 
   message(paste(Sys.time(), 'Running `seeker_snp_ld` for data.frame'))
 
@@ -104,13 +108,16 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   URL_LD <- paste0(server_2, ID1,"/",population, link1, window_size,
                    link2, d_prime, link3)
 
-  mydf <- ID[NULL,]
+  contents <- purrr::map(URL_LD, safely(jsonlite::fromJSON))
+  contents_1 <- purrr::transpose(contents)
+  contents_request <- contents_1[["result"]]
+
+  mydf <- data.frame()
   for(i in 1:length(URL_LD)){
-
-    pop_result <- fromJSON(URL_LD[i])
-
-    mydf <- rbind(mydf, pop_result)
+    if (!is.null(contents_request[[i]])){
+      mydf <- rbind(mydf, contents_request[[i]])
+    }
+    return(mydf)
   }
-  return(mydf)
 }
 
