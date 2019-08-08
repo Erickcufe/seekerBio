@@ -3,6 +3,7 @@
 \name{seeker_snp_ld}
 \alias{seeker_snp_ld}
 \alias{seeker_snp_ld.character}
+\alias{seeker_snp_ld.factor}
 \alias{seeker_snp_ld.data.frame}
 \title{seeker Single Nucleotide Polymorphism Linkage-Desequilibrium}
 \source{
@@ -13,6 +14,10 @@ seeker_snp_ld(ID, population = "1000GENOMES:phase_3:MXL",
   window_size = 500, d_prime = 0)
 
 \method{seeker_snp_ld}{character}(ID,
+  population = "1000GENOMES:phase_3:MXL", window_size = 500,
+  d_prime = 0)
+
+\method{seeker_snp_ld}{factor}(ID,
   population = "1000GENOMES:phase_3:MXL", window_size = 500,
   d_prime = 0)
 
@@ -34,6 +39,8 @@ Default 0}
 }
 \value{
 A data.frame with the LD information of SNP in a specific population
+
+\code{NULL}
 
 \code{NULL}
 

@@ -3,6 +3,7 @@
 \name{seeker_snp_freq}
 \alias{seeker_snp_freq}
 \alias{seeker_snp_freq.character}
+\alias{seeker_snp_freq.factor}
 \alias{seeker_snp_freq.data.frame}
 \title{seeker Single Nucleotide Polymorphism frequency}
 \source{
@@ -13,6 +14,8 @@ seeker_snp_freq(ID, study = "1000GENOMES:phase_3")
 
 \method{seeker_snp_freq}{character}(ID, study = "1000GENOMES:phase_3")
 
+\method{seeker_snp_freq}{factor}(ID, study = "1000GENOMES:phase_3")
+
 \method{seeker_snp_freq}{data.frame}(ID, study = "1000GENOMES:phase_3")
 }
 \arguments{
@@ -22,6 +25,8 @@ seeker_snp_freq(ID, study = "1000GENOMES:phase_3")
 }
 \value{
 A data.frame with the allel frequency in all the population of the given study
+
+\code{NULL}
 
 \code{NULL}
 

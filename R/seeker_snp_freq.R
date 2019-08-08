@@ -53,7 +53,36 @@ seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
   return(pop_result)
   } else {
 
-     df <- data.frame(gene = ID)
+    df <- data.frame(gene = ID)
+    pop_result <- seeker_snp_freq(df)
+    return(pop_result)
+
+  }
+}
+
+#' @return \code{NULL}
+#'
+#' @rdname seeker_snp_freq
+#' @export
+seeker_snp_freq.factor <- function(ID, study = "1000GENOMES:phase_3"){
+  message(paste(Sys.time(), 'Running `seeker_snp_freq` for factor'))
+
+  if (length(ID)==1){
+    server <- "http://rest.ensembl.org/variation/human/"
+    ligas <- paste0(server, ID,"?pops=1;content-type=application/json")
+
+    r <- fromJSON(ligas)
+    pop <- r[["populations"]]
+
+    seleccion <- stringr::str_detect(pop$population, study)
+    SNP <- c(rep(ID, length(pop[seleccion,])))
+    pop_result <- cbind(SNP = ID, pop[seleccion,])
+    pop_result$submission_id <- NULL
+
+    return(pop_result)
+  } else {
+
+    df <- data.frame(gene = ID)
     pop_result <- seeker_snp_freq(df)
     return(pop_result)
 

@@ -43,9 +43,7 @@ seeker_gen_pathway.character <- function(x) {
   if (length(x)==1){
 
   server="https://reactome.org/AnalysisService/identifier/"
-  pValue_Reactome= list()
-  name_Reactome= list()
-  pathID_Reactome = list()
+
   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
   datos <- jsonlite::fromJSON(url_reactome)
@@ -73,9 +71,7 @@ seeker_gen_pathway.factor <- function(x) {
   if (length(x)==1){
 
   server="https://reactome.org/AnalysisService/identifier/"
-  pValue_Reactome= list()
-  name_Reactome= list()
-  pathID_Reactome = list()
+
   informacion_Reactome <- paste(x, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
   datos <- jsonlite::fromJSON(url_reactome)
@@ -108,9 +104,7 @@ seeker_gen_pathway.data.frame <- function(x) {
     next()
   }
   server="https://reactome.org/AnalysisService/identifier/"
-  pValue_Reactome= list()
-  name_Reactome= list()
-  pathID_Reactome = list()
+
   informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
   datos <- jsonlite::fromJSON(url_reactome)

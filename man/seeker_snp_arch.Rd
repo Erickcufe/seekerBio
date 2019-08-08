@@ -3,6 +3,7 @@
 \name{seeker_snp_arch}
 \alias{seeker_snp_arch}
 \alias{seeker_snp_arch.character}
+\alias{seeker_snp_arch.factor}
 \alias{seeker_snp_arch.data.frame}
 \title{seeker Single Nucleotide Polymorphism (SNP) arquitecture}
 \source{
@@ -13,6 +14,8 @@ seeker_snp_arch(ID)
 
 \method{seeker_snp_arch}{character}(ID)
 
+\method{seeker_snp_arch}{factor}(ID)
+
 \method{seeker_snp_arch}{data.frame}(ID)
 }
 \arguments{
@@ -20,6 +23,8 @@ seeker_snp_arch(ID)
 }
 \value{
 A data.frame with the genomic arquitecture
+
+\code{NULL}
 
 \code{NULL}
 

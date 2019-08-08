@@ -43,6 +43,7 @@ seeker_snp_ld.character <- function(ID, population = "1000GENOMES:phase_3:MXL",
                           window_size = 500, d_prime = 0){
   message(paste(Sys.time(), 'Running `seeker_snp_ld` for character'))
 
+  if (length(ID)==1){
   server_2 <- "https://rest.ensembl.org/ld/human/"
   link1 <- "?window_size="
   link2 <- ";d_prime="
@@ -52,6 +53,38 @@ seeker_snp_ld.character <- function(ID, population = "1000GENOMES:phase_3:MXL",
                    link2, d_prime, link3)
 
   r <- fromJSON(URL_LD)
+  return(r)
+  } else {
+    df <- data.frame(ID)
+    ld_result <- seeker_snp_ld(df)
+    return(ld_result)
+  }
+}
+
+#' @return \code{NULL}
+#'
+#' @rdname seeker_snp_ld
+#' @export
+seeker_snp_ld.factor <- function(ID, population = "1000GENOMES:phase_3:MXL",
+                                    window_size = 500, d_prime = 0){
+  message(paste(Sys.time(), 'Running `seeker_snp_ld` for factor'))
+
+  if (length(ID)==1){
+  server_2 <- "https://rest.ensembl.org/ld/human/"
+  link1 <- "?window_size="
+  link2 <- ";d_prime="
+  link3 <- ";content-type=application/json"
+
+  URL_LD <- paste0(server_2, snp,"/",population, link1, window_size,
+                   link2, d_prime, link3)
+
+  r <- fromJSON(URL_LD)
+  return(r)
+  }  else {
+    df <- data.frame(ID)
+    ld_result <- seeker_snp_ld(df)
+    return(ld_result)
+  }
 }
 
 #' @return \code{NULL}
