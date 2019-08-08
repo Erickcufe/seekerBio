@@ -15,7 +15,9 @@
 #' https://www.ebi.ac.uk/gwas/
 #'
 #' @author
-#' Erick Cuevas-Fernández
+#' Erick Cuevas Fernández
+#'
+#' Heriberto Manuel Rivera
 #'
 #' @examples
 #' seeker_gwas("multiple sclerosis")

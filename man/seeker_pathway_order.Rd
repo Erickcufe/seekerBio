@@ -3,6 +3,9 @@
 \name{seeker_pathway_order}
 \alias{seeker_pathway_order}
 \title{seeker_pathway_order}
+\source{
+https://reactome.org
+}
 \usage{
 seeker_pathway_order(pathways)
 }
@@ -19,4 +22,9 @@ This function order the pathways of reactome into categories
 df <- data.frame(Gen=c("MMP12","MMP12","MMP12"), ID=c("R-HSA-1442490","R-HSA-1474228","R-HSA-1474244"), Path_name=c("Collagen degradation", "Degradation of the extracellular matrix", "Extracellular matrix organization"))
 seeker_pathway_order(df)
 
+}
+\author{
+Erick Cuevas Fernández
+
+Heriberto Manuel Rivera
 }

@@ -45,5 +45,7 @@ df <- data.frame(gen=c("MAPT", "APOE", "MMP12"))
 seeker_gen_pathway(df)
 }
 \author{
-Erick Cuevas-Fernández
+Erick Cuevas Fernández
+
+Heriberto Manuel Rivera
 }

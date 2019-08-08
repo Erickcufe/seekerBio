@@ -15,6 +15,7 @@
 #'
 #' @author
 #' Erick Cuevas-Fernández
+#'
 #' Heriberto Manuel Rivera
 #'
 #' @source

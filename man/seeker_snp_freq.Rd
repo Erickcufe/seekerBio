@@ -44,5 +44,6 @@ seeker_snp_freq(df)
 }
 \author{
 Erick Cuevas-Fernández
+
 Heriberto Manuel Rivera
 }

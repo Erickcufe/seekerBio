@@ -15,7 +15,9 @@
 #'
 #'
 #' @author
-#'Erick Cuevas-Fernández
+#'Erick Cuevas Fernández
+#'
+#'Heriberto Manuel Rivera
 #'
 #' @source
 #' https://reactome.org

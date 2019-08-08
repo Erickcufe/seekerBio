@@ -24,6 +24,7 @@
 #'
 #' @author
 #' Erick Cuevas-Fernández
+#'
 #' Heriberto Manuel Rivera
 #'
 #' @examples

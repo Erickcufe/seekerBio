@@ -7,6 +7,13 @@
 #' @return
 #' A column with the classification pathway
 #'
+#' @source
+#' https://reactome.org
+#'
+#' @author
+#' Erick Cuevas Fernández
+#'
+#' Heriberto Manuel Rivera
 #'
 #' @examples
 #'df <- data.frame(Gen=c("MMP12","MMP12","MMP12"), ID=c("R-HSA-1442490","R-HSA-1474228","R-HSA-1474244"), Path_name=c("Collagen degradation", "Degradation of the extracellular matrix", "Extracellular matrix organization"))

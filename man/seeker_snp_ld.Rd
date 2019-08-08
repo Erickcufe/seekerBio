@@ -58,5 +58,6 @@ seeker_snp_ld(df)
 }
 \author{
 Erick Cuevas-Fernández
+
 Heriberto Manuel Rivera
 }

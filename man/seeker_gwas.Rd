@@ -29,5 +29,7 @@ seeker_gwas("multiple sclerosis")
 seeker_gwas("fontotemporal")
 }
 \author{
-Erick Cuevas-Fernández
+Erick Cuevas Fernández
+
+Heriberto Manuel Rivera
 }
