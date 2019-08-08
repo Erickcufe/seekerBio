@@ -35,3 +35,6 @@ df <- data.frame(c("rs56116432","rs10878307", "rs7133914", "rs11564148", "rs3761
 seeker_snp_arch(df)
 
 }
+\author{
+Erick Cuevas-Fernández
+}

@@ -10,6 +10,9 @@
 #' @importFrom
 #' jsonlite fromJSON
 #'
+#' @author
+#' Erick Cuevas-Fernández
+#'
 #' @source
 #' https://rest.ensembl.org
 #'

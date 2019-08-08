@@ -14,6 +14,9 @@
 #' @importFrom
 #' jsonlite fromJSON
 #'
+#' @author
+#' Erick Cuevas-Fernández
+#'
 #' @examples
 #'seeker_snp_ld("rs56116432")
 #'

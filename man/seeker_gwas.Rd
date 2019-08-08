@@ -4,6 +4,9 @@
 \alias{seeker_gwas}
 \alias{seeker_gwas.character}
 \title{seeker gwas}
+\source{
+https://www.ebi.ac.uk/gwas/
+}
 \usage{
 seeker_gwas(trait)
 
@@ -24,4 +27,7 @@ Association Study of the input trait
 \examples{
 seeker_gwas("multiple sclerosis")
 seeker_gwas("fontotemporal")
+}
+\author{
+Erick Cuevas-Fernández
 }

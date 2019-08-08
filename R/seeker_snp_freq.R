@@ -11,6 +11,9 @@
 #' @source
 #' https://rest.ensembl.org
 #'
+#' @author
+#' Erick Cuevas-Fernández
+#'
 #' @importFrom
 #' jsonlite fromJSON
 #'

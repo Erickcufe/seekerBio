@@ -11,6 +11,12 @@
 #' @importFrom
 #' stringr str_split
 #'
+#' @source
+#' https://www.ebi.ac.uk/gwas/
+#'
+#' @author
+#' Erick Cuevas-Fernández
+#'
 #' @examples
 #' seeker_gwas("multiple sclerosis")
 #' seeker_gwas("fontotemporal")
