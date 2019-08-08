@@ -1,5 +1,5 @@
 # seekerBio
-This is an R package that have functions to find gene information in [GWAS catalog](https://www.ebi.ac.uk/gwas/), [ENSEMBL](https://www.ensembl.org/info/docs/api/index.html), [Reactome](https://reactome.org) 
+This is an R package that have functions to find gene and SNP information in [GWAS catalog](https://www.ebi.ac.uk/gwas/), [ENSEMBL](https://www.ensembl.org/info/docs/api/index.html), [Reactome](https://reactome.org) 
 
 ## Installation
 
