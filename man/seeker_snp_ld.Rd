@@ -5,6 +5,9 @@
 \alias{seeker_snp_ld.character}
 \alias{seeker_snp_ld.data.frame}
 \title{seeker Single Nucleotide Polymorphism Linkage-Desequilibrium}
+\source{
+https://rest.ensembl.org
+}
 \usage{
 seeker_snp_ld(ID, population = "1000GENOMES:phase_3:MXL",
   window_size = 500, d_prime = 0)

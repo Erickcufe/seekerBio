@@ -11,6 +11,9 @@
 #' @return
 #' A data.frame with the LD information of SNP in a specific population
 #'
+#' @source
+#' https://rest.ensembl.org
+#'
 #' @importFrom
 #' jsonlite fromJSON
 #'
