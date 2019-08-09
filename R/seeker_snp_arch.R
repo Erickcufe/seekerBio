@@ -11,7 +11,7 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose
+#' purrr map transpose safely
 #'
 #' @author
 #' Erick Cuevas-Fernández
@@ -97,7 +97,7 @@ seeker_snp_arch.data.frame <- function(ID){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
-  contents <- purrr::map(ligas, safely(jsonlite::fromJSON))
+  contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

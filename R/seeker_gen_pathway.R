@@ -11,13 +11,15 @@
 #'A data.frame with the pathways of the gen from reactome.org
 #'
 #' @importFrom
-#'jsonlite fromJSON
+#' jsonlite fromJSON
 #'
+#' @importFrom
+#' purrr map transpose safely
 #'
 #' @author
-#'Erick Cuevas Fernández
+#' Erick Cuevas Fernández
 #'
-#'Heriberto Manuel Rivera
+#' Heriberto Manuel Rivera
 #'
 #' @source
 #' https://reactome.org
@@ -99,23 +101,32 @@ seeker_gen_pathway.factor <- function(x) {
 seeker_gen_pathway.data.frame <- function(x) {
 
   message(paste(Sys.time(), 'Running `seeker_gen_pathway` for data.frame'))
+  ID1 <- as.matrix(x)
 
-  mydf <- x[NULL,]
-  for (i in seq_len(nrow(x))) {
-  if (x[i,]=="" | x[i,]=="NR") {
-    next()
-  }
+  mydf <- data.frame()
   server="https://reactome.org/AnalysisService/identifier/"
 
-  informacion_Reactome <- paste(x[i,], "/projection", sep = "", collapse = NULL)
+  informacion_Reactome <- paste(ID1, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
-  datos <- jsonlite::fromJSON(url_reactome)
-  paths<-datos[["pathways"]]
-  paths_select <- data.frame(Gen = rep(x[i,] ,length(paths$stId)),
-                             ID=paths$stId,
-                             Path_name=paths$name,
-                             pvalue=paths$entities$pValue)
-  mydf <- rbind(mydf, paths_select)
+
+  contents <- purrr::map(url_reactome, purrr::safely(jsonlite::fromJSON))
+  contents_1 <- purrr::transpose(contents)
+  contents_request <- contents_1[["result"]]
+
+  for (i in 1:length(contents_request)){
+
+    paths <- contents_request[[i]][["pathways"]]
+
+    if(!is.null(paths)){
+
+      paths_select <- data.frame(Gen = rep(ID1[i] ,length(paths$stId)),
+                                 ID=paths$stId,
+                                 Path_name=paths$name,
+                                 pvalue=paths$entities$pValue)
+      mydf <- rbind(mydf, paths_select)
+    } else {
+      next()
+    }
 
   }
 
