@@ -28,7 +28,7 @@
 #' Heriberto Manuel Rivera
 #'
 #' @examples
-#'seeker_snp_ld("rs56116432")
+#' seeker_snp_ld("rs56116432")
 #'
 #'df <- data.frame(c("rs56116432","rs10878307", "rs7133914", "rs11564148", "rs3761863", "rs10878245"))
 #'seeker_snp_ld(df)
