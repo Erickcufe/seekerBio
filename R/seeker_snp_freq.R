@@ -20,7 +20,7 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map
+#' purrr map transpose
 #'
 #' @examples
 #' seeker_snp_freq("rs56116432")

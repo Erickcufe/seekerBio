@@ -11,7 +11,7 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map
+#' purrr map transpose
 #'
 #' @author
 #' Erick Cuevas-Fernández
@@ -36,7 +36,7 @@ seeker_snp_arch <- function(ID){
 #' @return \code{NULL}
 #'
 #' @rdname seeker_snp_arch
-#' @export seeker_snp_arch
+#' @export
 seeker_snp_arch.character <- function(ID){
 
   message(paste(Sys.time(), 'Running `seeker_snp_arch` for character'))

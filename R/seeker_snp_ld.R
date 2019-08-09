@@ -20,7 +20,7 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map
+#' purrr map transpose
 #'
 #' @author
 #' Erick Cuevas-Fernández
