@@ -36,7 +36,7 @@ seeker_snp_arch <- function(ID){
 #' @return \code{NULL}
 #'
 #' @rdname seeker_snp_arch
-#' @export
+#' @export seeker_snp_arch
 seeker_snp_arch.character <- function(ID){
 
   message(paste(Sys.time(), 'Running `seeker_snp_arch` for character'))
