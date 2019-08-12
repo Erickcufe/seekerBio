@@ -54,10 +54,10 @@ seeker_snp_ld.character <- function(ID, population = "1000GENOMES:phase_3:MXL",
   link2 <- ";d_prime="
   link3 <- ";content-type=application/json"
 
-  URL_LD <- paste0(server_2, snp,"/",population, link1, window_size,
+  URL_LD <- paste0(server_2, ID,"/",population, link1, window_size,
                    link2, d_prime, link3)
 
-  r <- fromJSON(URL_LD)
+  r <- jsonlite::fromJSON(URL_LD)
   return(r)
   } else {
     df <- data.frame(ID)
@@ -83,7 +83,7 @@ seeker_snp_ld.factor <- function(ID, population = "1000GENOMES:phase_3:MXL",
   URL_LD <- paste0(server_2, snp,"/",population, link1, window_size,
                    link2, d_prime, link3)
 
-  r <- fromJSON(URL_LD)
+  r <- jsonlite::fromJSON(URL_LD)
   return(r)
   }  else {
     df <- data.frame(ID)
