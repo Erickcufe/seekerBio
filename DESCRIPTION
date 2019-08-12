@@ -14,7 +14,9 @@ RoxygenNote: 6.1.1
 Imports: 
     jsonlite,
     stringr,
-    purrr
+    purrr,
+    ggplot2,
+    ggrepel
 Suggests: 
     knitr,
     rmarkdown,
