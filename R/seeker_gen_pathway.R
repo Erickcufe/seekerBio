@@ -117,6 +117,10 @@ seeker_gen_pathway.data.frame <- function(x) {
 
     paths <- contents_request[[i]][["pathways"]]
 
+    if (length(paths)==0){
+      next()
+    }
+
     if(!is.null(paths)){
 
       paths_select <- data.frame(Gen = rep(ID1[i] ,length(paths$stId)),

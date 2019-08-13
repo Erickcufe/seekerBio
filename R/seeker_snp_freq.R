@@ -106,16 +106,24 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
+
   mydf <- data.frame()
   for(i in 1:length(contents_request)){
 
     pop <- contents_request[[i]][["populations"]]
+    if (length(pop)==0){
+      next()
+    }
 
-    if (!is.null(pop)){
+    seleccion <- stringr::str_detect(pop$population, study)
 
-      seleccion <- stringr::str_detect(pop$population, study)
-      SNP <- c(rep(ID, length(pop[seleccion,])))
-      pop_result <- cbind(SNP = ID1[i], pop[seleccion,])
+    if (!is.null(pop) & length(pop[seleccion,1])!=0){
+
+
+      pop_select <- pop[seleccion,]
+      # SNP <- c(rep(ID, length(pop[seleccion,])))
+
+      pop_result <- data.frame(SNP = ID1[i], pop_select)
       pop_result$submission_id <- NULL
 
       mydf <- rbind(mydf, pop_result)

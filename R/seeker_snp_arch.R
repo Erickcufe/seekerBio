@@ -106,7 +106,13 @@ seeker_snp_arch.data.frame <- function(ID){
   for (i in 1:length(contents_request)){
 
     pop <- contents_request[[i]][["mappings"]]
-    if(!is.null(pop)){
+
+    if (length(pop)==0){
+      next()
+    }
+
+
+    if(!is.null(pop) & length(pop[,1])!=0){
     pop_result <- data.frame(SNP = ID1[i], pop)
     mydf <- rbind(mydf, pop_result)
     } else {
