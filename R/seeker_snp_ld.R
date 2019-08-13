@@ -115,6 +115,11 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
 
   mydf <- data.frame()
   for(i in 1:length(URL_LD)){
+
+    if (length(contents_request)==0){
+      next()
+    }
+
     if (!is.null(contents_request[[i]])){
       mydf <- rbind(mydf, contents_request[[i]])
     }

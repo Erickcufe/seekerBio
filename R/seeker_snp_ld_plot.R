@@ -51,17 +51,18 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
 
   label1 <- paste("Chr", variation_snp$seq_region_name)
 
-  ggplot2::ggplot(to_plot, aes(x=start, y= as.numeric(r2))) +
-    geom_point(alpha= 0.6, size=3) + geom_point(data= variation_snp,
-                                                aes(x = start, y= as.numeric(r2)),
-                                                size= 5,
-                                                color= "red",
-                                                alpha= 0.8) +
+  ggplot(data = to_plot, aes(x = start, y = as.numeric(r2), colour = as.numeric(d_prime))) +
+    geom_point(alpha = 0.75, size = 2) + geom_point(data = variation_snp,
+                                                    aes(x = start, y = as.numeric(r2)),
+                                                    size= 4,
+                                                    color= "red",
+                                                    alpha= 0.8) +
     theme_minimal() + geom_area(aes(start), data=to_plot, alpha= 0.2,
                                 fill= color_select, color="black") +
+    scale_color_gradient(low="green", high="red") +
     ggrepel::geom_label_repel(aes(label=ifelse(r2>0.6,as.character(variation2),'')),box.padding= 0.2,
-                     point.padding = 0.3,
-                     segment.color = 'grey50') +
+                              point.padding = 0.3,
+                              segment.color = 'grey50') +
     theme(axis.text.x = element_text(angle = 60, hjust = 0.5, size = 20),
           axis.text.y =element_text(size=20),axis.text.y.right = element_text(size=20),
           plot.title = element_text(hjust = 0.5, size=30),
@@ -74,6 +75,6 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
                aes(x = start, y= as.numeric(r2)), label= variation_snp$SNP,
                nudge_x = 0.8, nudge_y = 0.02,
                color="red") +
-    ggtitle(population_study)
+    ggtitle(population_study) + labs(colour = "LD")
 
 }
