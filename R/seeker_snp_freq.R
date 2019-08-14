@@ -102,6 +102,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
+
   contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
