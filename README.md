@@ -19,3 +19,9 @@ Antonio Fabregat, Steven Jupe, Lisa Matthews, Konstantinos Sidiropoulos, Marc Gi
 
 Andrew Yates, Kathryn Beal, Stephen Keenan, William McLaren, Miguel Pignatelli, Graham R. S. Ritchie, Magali Ruffier, Kieron Taylor, Alessandro Vullo, Paul Flicek, The Ensembl REST API: Ensembl Data for Any Language, Bioinformatics, Volume 31, Issue 1, 1 January 2015, Pages 143–145, https://doi.org/10.1093/bioinformatics/btu613
 
+
+## Examples:
+```
+library(seekerBio)
+````
+
