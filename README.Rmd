@@ -21,7 +21,10 @@ Andrew Yates, Kathryn Beal, Stephen Keenan, William McLaren, Miguel Pignatelli, 
 
 
 ## Examples:
-```
+```{r}
 library(seekerBio)
-````
+```
+```{r}
+seeker_snp_ld_plot("rs7412", population_study="1000GENOMES:phase_3:FIN", color_select = "green")
+```
 
