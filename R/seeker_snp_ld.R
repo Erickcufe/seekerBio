@@ -120,10 +120,15 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
       next()
     }
 
-    if (!is.null(contents_request[[i]])){
+
+    if (!is.null(contents_request[[i]]) & length(contents_request[[i]]) !=0){
+
       mydf <- rbind(mydf, contents_request[[i]])
+
     }
-    return(mydf)
+
   }
+
+  return(mydf)
 }
 
