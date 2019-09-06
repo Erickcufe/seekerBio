@@ -10,6 +10,9 @@
 #' @import
 #' ggplot2
 #'
+#' @import
+#' dplyr
+#'
 #' @author
 #' Erick Cuevas Fernández
 #'
