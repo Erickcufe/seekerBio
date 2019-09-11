@@ -63,7 +63,7 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
     ggrepel::geom_label_repel(aes(label=ifelse(r2>0.6,as.character(variation2),'')), box.padding= 0.2,
                               point.padding = 0.3,
                               segment.color = 'grey50') +
-    theme(axis.text.x = element_text(angle = 60, hjust = 0.5, size = 20),
+    theme(axis.text.x = element_text(angle = 60, hjust = 0.9, size = 20),
           axis.text.y =element_text(size=20),axis.text.y.right = element_text(size=20),
           plot.title = element_text(hjust = 0.5, size=30),
           legend.title = element_text(size = 20),
