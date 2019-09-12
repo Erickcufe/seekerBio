@@ -144,10 +144,24 @@ seeker_snp_context.character <- function(SNP){
     }
 
     SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
-    SNPs_4 <- data.frame(SNPs_4)
-    SNPs_4 <- SNPs_4[1,]
-    SNPs_4 <- t(SNPs_4)
-    genes <- cbind(SNPs,as.character(SNPs_4))
+
+    df_snp4 <- data.frame()
+    for (i in 1:length(SNPs_4)) {
+
+      if (length(SNPs_4[[i]])==1){
+
+        tmp_df <- data.frame(CONTEXT=SNPs_4[[i]])
+        df_snp4 <- rbind(df_snp4, tmp_df)
+
+      } else {
+
+        tmp_df <- data.frame(CONTEXT=paste(SNPs_4[[i]], collapse = ", "))
+        df_snp4 <- rbind(df_snp4, tmp_df)
+      }
+
+    }
+
+    genes <- cbind(SNPs_1,df_snp4)
     genes <- data.frame(genes)
     colnames(genes) <- c("SNP","GENE")
     rownames(genes) <- NULL
@@ -222,7 +236,7 @@ seeker_snp_context.data.frame <- function(SNP){
   SNPs_3 <- data.frame(SNPs_3)
   SNPs_3 <- SNPs_3[1,]
   SNPs_3 <- t(SNPs_3)
-  All_SNPs <- cbind(SNPs,SNPs_3)
+  All_SNPs <- cbind(SNPs_1,SNPs_3)
   All_SNPs <- data.frame(All_SNPs)
   colnames(All_SNPs) <- c("SNP","CONTEXT")
   rownames(All_SNPs) <- NULL
@@ -258,15 +272,30 @@ seeker_snp_context.data.frame <- function(SNP){
   }
 
   SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
-  SNPs_4 <- data.frame(SNPs_4)
-  SNPs_4 <- SNPs_4[1,]
-  SNPs_4 <- t(SNPs_4)
-  genes <- cbind(SNPs,SNPs_4)
+
+  df_snp4 <- data.frame()
+  for (i in 1:length(SNPs_4)) {
+
+    if (length(SNPs_4[[i]])==1){
+
+      tmp_df <- data.frame(CONTEXT=SNPs_4[[i]])
+      df_snp4 <- rbind(df_snp4, tmp_df)
+
+    } else {
+
+      tmp_df <- data.frame(CONTEXT=paste(SNPs_4[[i]], collapse = ", "))
+      df_snp4 <- rbind(df_snp4, tmp_df)
+    }
+
+  }
+
+  genes <- cbind(SNPs_1,df_snp4)
   genes <- data.frame(genes)
   colnames(genes) <- c("SNP","GENE")
   rownames(genes) <- NULL
   context_gene <- cbind(All_SNPs, GENE=genes$GENE)
   rownames(context_gene) <- NULL
+
 
   return(context_gene)
 }
