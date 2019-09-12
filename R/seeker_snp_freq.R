@@ -20,7 +20,13 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose safely
+#' purrr transpose safely
+#'
+#' @importFrom
+#' furrr future_map
+#'
+#' @importFrom
+#' future plan multiprocess
 #'
 #' @examples
 #' seeker_snp_freq("rs56116432")
@@ -103,7 +109,10 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
 
-  contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+  future::plan(multiprocess)
+
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
