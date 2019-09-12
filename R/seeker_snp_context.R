@@ -19,7 +19,13 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose safely
+#' purrr transpose safely
+#'
+#' @importFrom
+#' furrr future_map
+#'
+#' @importFrom
+#' future plan multiprocess
 #'
 #' @examples
 #' seeker_snp_context("rs56116432")
@@ -68,7 +74,10 @@ seeker_snp_context.character <- function(SNP){
     ligas <- paste0(URL_dbSNP,SNPs_1)
     vector_SNPs <- list()
 
-    contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+    future::plan(multiprocess)
+
+    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                  .progress = TRUE)
     contents_1 <- purrr::transpose(contents)
     contents_request <- contents_1[["result"]]
 
@@ -196,7 +205,11 @@ seeker_snp_context.data.frame <- function(SNP){
   URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
   ligas <- paste0(URL_dbSNP,SNPs_1)
 
-  contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+  future::plan(multiprocess)
+
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = TRUE)
+
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
