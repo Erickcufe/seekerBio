@@ -8,6 +8,8 @@
 #' @author
 #' Erick Cuevas-Fernández
 #'
+#' @import
+#' dplyr
 #'
 #' @examples
 #'
@@ -244,8 +246,8 @@ seeker_snp_freq_format <- function(data){
     df_completos_1 <- df_completos_1[-1,]
 
     df_completos_2 <- cbind(SNP = df_completos[1,1], df_completos_1,
-                            Ancestral = df_completos[1,2],
-                            Minor = df_completos[2,2])
+                            Ancestral = df_completos$allele[1],
+                            Minor = df_completos$allele[2])
 
     mydf_non <- rbind(mydf_non, df_completos_2)
 
@@ -253,7 +255,7 @@ seeker_snp_freq_format <- function(data){
   }
 
   mydf_all <- rbind(mydf_complete, mydf_non)
-
+  mydf_all <- data_frame(mydf_all)
   message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
 
