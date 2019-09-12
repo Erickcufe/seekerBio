@@ -1,46 +1,273 @@
-seeker_snp_context <- function(){
-  SNPs <- as.character(alz_ordered$SNP)
+#' seeker Single Nucleotide Polymorphism Context
+#'
+#' A generic function to search the type of variation & gene
+#'
+#' @param SNP A Single Nucleotide Polymorphism ID ("rs") in character or data.frame
+#'
+#' @return
+#' A data.frame with Type of variation & gene of each SNP
+#'
+#' @source
+#' https://rest.ensembl.org
+#'
+#' @author
+#' Erick Cuevas-Fernández
+#'
+#' Heriberto Manuel Rivera
+#'
+#' @importFrom
+#' jsonlite fromJSON
+#'
+#' @importFrom
+#' purrr map transpose safely
+#'
+#' @examples
+#' seeker_snp_context("rs56116432")
+#'
+#' df <- data.frame(c("rs56116432","rs10878307", "rs7133914", "rs11564148", "rs3761863", "rs10878245"))
+#' seeker_snp_context(df)
+#'
+#' @rdname seeker_snp_context
+#' @export seeker_snp_context
+seeker_snp_context <- function(SNP) {
+  UseMethod("seeker_snp_context")
+}
+
+#' @rdname seeker_snp_context
+#' @export
+seeker_snp_context.factor <- function(SNP){
+  message(paste(Sys.time(), 'Running `seeker_snp_context` for factor'))
+
+  if (length(SNP)==1){
+
+    SNP <- as.character(SNP)
+    seeker_snp_context(SNP=SNP)
+
+  } else {
+
+    df <- data.frame(SNP = SNP)
+    pop_result <- seeker_snp_context(SNP=df)
+    return(pop_result)
+
+
+  }
+
+}
+
+#' @rdname seeker_snp_context
+#' @export
+seeker_snp_context.character <- function(SNP){
+  message(paste(Sys.time(), 'Running `seeker_snp_context` for character'))
+
+  if (length(SNP)==1){
+
+    SNPs <- SNP
+    SNPs_1 <- unlist(strsplit(SNPs, split = 'rs', fixed = T))
+    SNPs_1 <- SNPs_1[SNPs_1 != ""]
+    URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
+    ligas <- paste0(URL_dbSNP,SNPs_1)
+    vector_SNPs <- list()
+
+    contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+    contents_1 <- purrr::transpose(contents)
+    contents_request <- contents_1[["result"]]
+
+    vector_SNPs <- list()
+    # For context
+    for (i in 1:length(contents_request)){
+
+      request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
+
+      if (!is.null(request[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]])){
+
+        context_SNP <- request[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]]
+
+      } else {
+
+        if(!is.null(request[[2]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]])){
+
+          context_SNP <- request[[2]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]]
+
+        } else {
+
+          context_SNP <- request[[1]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]]
+
+        }
+      }
+
+      if(is.null(context_SNP)){
+
+        context_SNP <- "UNKNOW"
+      }
+
+      vector_SNPs[[i]] <- context_SNP
+
+    }
+
+    SNPs_3 <- vector_SNPs[!sapply(vector_SNPs, is.null)]
+    SNPs_3 <- data.frame(SNPs_3)
+    SNPs_3 <- SNPs_3[1,]
+    SNPs_3 <- t(SNPs_3)
+    All_SNPs <- cbind(SNPs,as.character(SNPs_3))
+    All_SNPs <- data.frame(All_SNPs)
+    colnames(All_SNPs) <- c("SNP","CONTEXT")
+    rownames(All_SNPs) <- NULL
+
+
+    # For GENE
+
+    vector_gene <- list()
+    for (i in 1:length(contents_request)){
+
+      request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
+
+      if (!is.null(request[[2]][["genes"]][[1]][["locus"]])){
+
+        context_SNP <- request[[2]][["genes"]][[1]][["locus"]]
+
+      } else {
+
+        if(!is.null(request[[1]][["genes"]][[1]][["locus"]])){
+
+          context_SNP <- request[[1]][["genes"]][[1]][["locus"]]
+
+        } else {
+
+          context_SNP <- "UNKNOW"
+
+        }
+      }
+
+
+      vector_gene[[i]] <- context_SNP
+
+    }
+
+    SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
+    SNPs_4 <- data.frame(SNPs_4)
+    SNPs_4 <- SNPs_4[1,]
+    SNPs_4 <- t(SNPs_4)
+    genes <- cbind(SNPs,as.character(SNPs_4))
+    genes <- data.frame(genes)
+    colnames(genes) <- c("SNP","GENE")
+    rownames(genes) <- NULL
+    context_gene <- cbind(All_SNPs, GENE=genes$GENE)
+    rownames(context_gene) <- NULL
+
+    return(context_gene)
+
+  } else {
+
+    df <- data.frame(SNP = SNP)
+    pop_result <- seeker_snp_context(SNP=df)
+    return(pop_result)
+
+
+  }
+
+}
+
+
+#' @rdname seeker_snp_context
+#' @export
+seeker_snp_context.data.frame <- function(SNP){
+
+  message(paste(Sys.time(), 'Running `seeker_snp_context` for data.frame'))
+
+
+  SNPs <- as.matrix(SNP)
 
   SNPs_1 <- unlist(strsplit(SNPs, split = 'rs', fixed = T))
   SNPs_1 <- SNPs_1[SNPs_1 != ""]
-  #SNPs_1<-SNPs_1[-1]
-
   URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
-  vector_SNPs <- list()
-  library(jsonlite)
+  ligas <- paste0(URL_dbSNP,SNPs_1)
 
-  for (i in 1:length(SNPs_1)) {
-    URL_paste <- paste0(URL_dbSNP,SNPs_1[1])
-    URL_search <- fromJSON(URL_paste)
-    URL_search <- URL_search$primary_snapshot_data$allele_annotations$assembly_annotation
-    if (!is.null(URL_search[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]])){
-      data_SNP <- URL_search[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]]
+  contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+  contents_1 <- purrr::transpose(contents)
+  contents_request <- contents_1[["result"]]
+
+  vector_SNPs <- list()
+  # For context
+  for (i in 1:length(contents_request)){
+
+    request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
+
+    if (!is.null(request[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]])){
+
+      context_SNP <- request[[2]][["genes"]][[1]][["rnas"]][[1]][["protein"]][["sequence_ontology"]][[1]][["name"]]
 
     } else {
-      data_SNP <- URL_search[[1]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]]
 
+      if(!is.null(request[[2]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]])){
+
+        context_SNP <- request[[2]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]]
+
+      } else {
+
+        context_SNP <- request[[1]][["genes"]][[1]][["rnas"]][[1]][["sequence_ontology"]][[1]][["name"]]
+
+      }
     }
-    vector_SNPs[[i]] <- data_SNP
-    print(i)
+
+    if(is.null(context_SNP)){
+
+      context_SNP <- "UNKNOW"
+    }
+
+    vector_SNPs[[i]] <- context_SNP
 
   }
 
-
-  selector<-vector()
-  for (i in 1:length(vector_SNPs)){
-    selector[i] <- !is.null(vector_SNPs[[i]])
-  }
-
-  SNPs <- SNPs[-1,]
-  SNPS_2 <- SNPs[selector]
   SNPs_3 <- vector_SNPs[!sapply(vector_SNPs, is.null)]
   SNPs_3 <- data.frame(SNPs_3)
   SNPs_3 <- SNPs_3[1,]
   SNPs_3 <- t(SNPs_3)
-  All_SNPs <- cbind(SNPS_2,SNPs_3)
+  All_SNPs <- cbind(SNPs,SNPs_3)
   All_SNPs <- data.frame(All_SNPs)
+  colnames(All_SNPs) <- c("SNP","CONTEXT")
+  rownames(All_SNPs) <- NULL
 
-  colnames(All_SNPs) <- c("SNPS","CONTEXT")
 
+  # For GENE
+
+  vector_gene <- list()
+  for (i in 1:length(contents_request)){
+
+    request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
+
+    if (!is.null(request[[2]][["genes"]][[1]][["locus"]])){
+
+      context_SNP <- request[[2]][["genes"]][[1]][["locus"]]
+
+    } else {
+
+      if(!is.null(request[[1]][["genes"]][[1]][["locus"]])){
+
+        context_SNP <- request[[1]][["genes"]][[1]][["locus"]]
+
+      } else {
+
+        context_SNP <- "UNKNOW"
+
+      }
+    }
+
+
+    vector_gene[[i]] <- context_SNP
+
+  }
+
+  SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
+  SNPs_4 <- data.frame(SNPs_4)
+  SNPs_4 <- SNPs_4[1,]
+  SNPs_4 <- t(SNPs_4)
+  genes <- cbind(SNPs,SNPs_4)
+  genes <- data.frame(genes)
+  colnames(genes) <- c("SNP","GENE")
+  rownames(genes) <- NULL
+  context_gene <- cbind(All_SNPs, GENE=genes$GENE)
+  rownames(context_gene) <- NULL
+
+  return(context_gene)
 }
 
