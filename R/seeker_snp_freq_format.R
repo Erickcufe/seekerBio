@@ -147,12 +147,12 @@ seeker_snp_freq_format <- function(data){
         if(incomplete_df$frequency[j]< 1){
 
           tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
-                                       allele=incomplete_df$allele[1],
+                                       allele=incomplete_df$allele[j],
                                        population=incomplete_df$population[j],
                                        frequency=incomplete_df$frequency[j])
 
           tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
-                                allele=incomplete_df$allele[2],
+                                allele=incomplete_df$allele[j+1],
                                 population=incomplete_df$population[j],
                                 frequency=(1-incomplete_df$frequency[j]))
 
@@ -165,12 +165,12 @@ seeker_snp_freq_format <- function(data){
         }
 
         tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
-                                     allele=incomplete_df$allele[1],
+                                     allele=incomplete_df$allele[j],
                                      population=incomplete_df$population[j],
                                      frequency=incomplete_df$frequency[j])
 
         tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
-                              allele=incomplete_df$allele[2],
+                              allele=incomplete_df$allele[j+1],
                               population=incomplete_df$population[j],
                               frequency=0)
         mydf_incomplete <- rbind(mydf_incomplete,
