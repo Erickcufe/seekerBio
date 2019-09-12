@@ -255,7 +255,6 @@ seeker_snp_freq_format <- function(data){
   }
 
   mydf_all <- rbind(mydf_complete, mydf_non)
-  mydf_all <- data_frame(mydf_all)
   message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
 
