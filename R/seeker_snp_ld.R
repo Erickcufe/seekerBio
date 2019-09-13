@@ -117,7 +117,7 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
 
   future::plan(multiprocess)
 
-  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+  contents <- furrr::future_map(URL_LD, purrr::safely(jsonlite::fromJSON),
                                 .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
@@ -125,7 +125,7 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   mydf <- data.frame()
   for(i in 1:length(URL_LD)){
 
-    if (length(contents_request)==0){
+    if (length(contents_request[[i]])==0){
       next()
     }
 
