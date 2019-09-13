@@ -234,6 +234,10 @@ seeker_snp_freq_format <- function(data){
 
     df_incompletos <- incompletos[[i]]
 
+    if(nrow(incompletos[[i]] > 64)){
+      next
+    }
+
     for(j in seq(from= 1, to=nrow(df_incompletos), by=2)){
 
       ordered_freq <- sort(df_incompletos[c(j,j+1), 4], decreasing = TRUE)
@@ -262,6 +266,7 @@ seeker_snp_freq_format <- function(data){
 
   }
 
+  rownames(mydf_all) <- NULL
   message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
 
