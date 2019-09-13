@@ -249,7 +249,7 @@ seeker_snp_context.data.frame <- function(SNP){
   SNPs_3 <- data.frame(SNPs_3)
   SNPs_3 <- SNPs_3[1,]
   SNPs_3 <- t(SNPs_3)
-  All_SNPs <- cbind(SNPs_1,SNPs_3)
+  All_SNPs <- cbind(SNPs,SNPs_3)
   All_SNPs <- data.frame(All_SNPs)
   colnames(All_SNPs) <- c("SNP","CONTEXT")
   rownames(All_SNPs) <- NULL
@@ -302,7 +302,7 @@ seeker_snp_context.data.frame <- function(SNP){
 
   }
 
-  genes <- cbind(SNPs_1,df_snp4)
+  genes <- cbind(SNPs,df_snp4)
   genes <- data.frame(genes)
   colnames(genes) <- c("SNP","GENE")
   rownames(genes) <- NULL
