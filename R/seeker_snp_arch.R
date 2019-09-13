@@ -11,7 +11,13 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose safely
+#' purrr transpose safely
+#'
+#' @importFrom
+#' furrr future_map
+#'
+#' @importFrom
+#' future plan multiprocess
 #'
 #' @author
 #' Erick Cuevas-Fernández
@@ -97,7 +103,10 @@ seeker_snp_arch.data.frame <- function(ID){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
-  contents <- purrr::map(ligas, purrr::safely(jsonlite::fromJSON))
+  future::plan(multiprocess)
+
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

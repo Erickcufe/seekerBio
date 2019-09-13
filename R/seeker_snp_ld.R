@@ -20,7 +20,13 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose safely
+#' purrr transpose safely
+#'
+#' @importFrom
+#' furrr future_map
+#'
+#' @importFrom
+#' future plan multiprocess
 #'
 #' @author
 #' Erick Cuevas-Fernández
@@ -109,7 +115,10 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   URL_LD <- paste0(server_2, ID1,"/",population, link1, window_size,
                    link2, d_prime, link3)
 
-  contents <- purrr::map(URL_LD, purrr::safely(jsonlite::fromJSON))
+  future::plan(multiprocess)
+
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

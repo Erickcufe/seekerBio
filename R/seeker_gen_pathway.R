@@ -14,7 +14,13 @@
 #' jsonlite fromJSON
 #'
 #' @importFrom
-#' purrr map transpose safely
+#' purrr transpose safely
+#'
+#' @importFrom
+#' furrr future_map
+#'
+#' @importFrom
+#' future plan multiprocess
 #'
 #' @author
 #' Erick Cuevas Fernández
@@ -109,7 +115,10 @@ seeker_gen_pathway.data.frame <- function(x) {
   informacion_Reactome <- paste(ID1, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
 
-  contents <- purrr::map(url_reactome, purrr::safely(jsonlite::fromJSON))
+  future::plan(multiprocess)
+
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
