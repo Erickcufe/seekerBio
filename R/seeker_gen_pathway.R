@@ -117,7 +117,7 @@ seeker_gen_pathway.data.frame <- function(x) {
 
   future::plan(multiprocess)
 
-  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+  contents <- furrr::future_map(url_reactome, purrr::safely(jsonlite::fromJSON),
                                 .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
