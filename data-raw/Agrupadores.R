@@ -65,7 +65,7 @@ circadian_seeker <- data.frame(Circadian_Clock,stringsAsFactors = F)
 # usethis::use_data(circadian_seeker)
 
 
-Developmental_Biology <-  c("R-HSA-1266738", "R-HSA-5619507", "R-HSA-5617472", "R-HSA-422475",
+Developmental_Biology <-  c("R-HSA-9616222","R-HSA-1266738", "R-HSA-5619507", "R-HSA-5617472", "R-HSA-422475",
                          "R-HSA-2682334", "R-HSA-3928665", "R-HSA-3928663", "R-HSA-3928662",
                          "R-HSA-3928664", "R-HSA-373760", "R-HSA-447041", "R-HSA-445095",
                          "R-HSA-447043", "R-HSA-447038", "R-HSA-437239", "R-HSA-445144",
@@ -81,7 +81,7 @@ Developmental_Biology <-  c("R-HSA-1266738", "R-HSA-5619507", "R-HSA-5617472", "
                          "R-HSA-210744", "R-HSA-1181150", "R-HSA-1433617", "R-HSA-452723",
                          "R-HSA-2892247", "R-HSA-2892245", "R-HSA-381340")
 development_seeker <- data.frame(Developmental_Biology,stringsAsFactors = F)
-# usethis::use_data(development_seeker)
+# usethis::use_data(development_seeker, overwrite = TRUE)
 
 Digestion_and_absorption <-  c("R-HSA-8963743", "R-HSA-189085", "R-HSA-192456", "R-HSA-189085",
                             "R-HSA-8963676", "R-HSA-8963678", "R-HSA-8981373")
@@ -89,7 +89,7 @@ digestion_seeker <- data.frame(Digestion_and_absorption,stringsAsFactors = F)
 # usethis::use_data(digestion_seeker)
 
 
-Disease <- c("R-HSA-5603029","R-HSA-9649948","R-HSA-5602358","R-HSA-5602571" ,"R-HSA-167152","R-HSA-1643685", "R-HSA-5663205", "R-HSA-5339562", "R-HSA-5336415",
+Disease <- c("R-HSA-5602498","R-HSA-5603029","R-HSA-9649948","R-HSA-5602358","R-HSA-5602571" ,"R-HSA-167152","R-HSA-1643685", "R-HSA-5663205", "R-HSA-5339562", "R-HSA-5336415",
           "R-HSA-5210891", "R-HSA-168799", "R-HSA-5250982", "R-HSA-5250989",
           "R-HSA-5250981", "R-HSA-5250992", "R-HSA-5250955", "R-HSA-5250971",
           "R-HSA-5250958", "R-HSA-5250968", "R-HSA-8942233", "R-HSA-8876384",
@@ -165,8 +165,8 @@ Disease <- c("R-HSA-5603029","R-HSA-9649948","R-HSA-5602358","R-HSA-5602571" ,"R
           "R-HSA-5579012", "R-HSA-5579006", "R-HSA-9035968", "R-HSA-5579022",
           "R-HSA-5578999", "R-HSA-5579019", "R-HSA-5579013", "R-HSA-5579005",
           "R-HSA-5579011", "R-HSA-5579027", "R-HSA-5579014", "R-HSA-5578996",
-          "R-HSA-5579004", "R-HSA-5579015", "R-HSA-5579010", "R-HSA-5579021",
-          "R-HSA-5579000", "R-HSA-3906995", "R-HSA-3781865" )
+          "R-HSA-5579004", "R-HSA-5579015", "R-HSA-5579010", "R-HSA-5579021","R-HSA-5260271",
+          "R-HSA-5579000", "R-HSA-3906995", "R-HSA-3781865","R-HSA-5603041","R-HSA-5602358" )
 disease_seeker <- data.frame(Disease,stringsAsFactors = F)
 # usethis::use_data(disease_seeker, overwrite = TRUE)
 
@@ -202,7 +202,7 @@ Extracellular_matrix_organization <-  c("R-HSA-1474244", "R-HSA-3000171", "R-HSA
 extra_cell_matrix_seeker <- data.frame(Extracellular_matrix_organization,stringsAsFactors = F)
 # usethis::use_data(extra_cell_matrix_seeker)
 
-Gene_expression_Transcription <-  c("R-HSA-74160", "R-HSA-73857", "R-HSA-6807505", "R-HSA-73856",
+Gene_expression_Transcription <-  c("R-HSA-9022707","R-HSA-74160", "R-HSA-73857", "R-HSA-6807505", "R-HSA-73856",
                                     "R-HSA-109688", "R-HSA-73779", "R-HSA-76042", "R-HSA-75953",
                                     "R-HSA-73776", "R-HSA-75955", "R-HSA-113418", "R-HSA-112382",
                                     "R-HSA-674695", "R-HSA-77075", "R-HSA-212436", "R-HSA-2032785",
@@ -245,7 +245,7 @@ Hemostasis <-  c("R-HSA-109582", "R-HSA-418346", "R-HSA-392851", "R-HSA-432142",
 hemostasis_seeker <- data.frame(Hemostasis,stringsAsFactors = F)
 # usethis::use_data(hemostasis_seeker)
 
-Immune_System <-  c("R-HSA-8983711","R-HSA-9607240","R-HSA-168256", "R-HSA-1280215", "R-HSA-5668541", "R-HSA-5669034", "R-HSA-5676594",
+Immune_System <-  c("R-HSA-8941413","R-HSA-8983711","R-HSA-9607240","R-HSA-168256", "R-HSA-1280215", "R-HSA-5668541", "R-HSA-5669034", "R-HSA-5676594",
                   "R-HSA-5676590", "R-HSA-449147", "R-HSA-449836", "R-HSA-1266695", "R-HSA-6783589",
                   "R-HSA-1059683", "R-HSA-6788467", "R-HSA-6785807", "R-HSA-512988", "R-HSA-912631",
                   "R-HSA-8854691", "R-HSA-451927", "R-HSA-8985947", "R-HSA-9020958", "R-HSA-9020558",
@@ -343,7 +343,7 @@ Muscle_contraction <-  c("R-HSA-397014", "R-HSA-390522", "R-HSA-5576891", "R-HSA
 muscle_cons_seeker <- data.frame(Muscle_contraction,stringsAsFactors = F)
 # usethis::use_data(muscle_cons_seeker)
 
-Neuronal_System <-  c("R-HSA-9619483","R-HSA-9620244","R-HSA-112316", "R-HSA-6794362", "R-HSA-6794361", "R-HSA-388844",
+Neuronal_System <-  c("R-HSA-9617324","R-HSA-9619483","R-HSA-9620244","R-HSA-112316", "R-HSA-6794362", "R-HSA-6794361", "R-HSA-388844",
                     "R-HSA-8849932", "R-HSA-112315", "R-HSA-112311", "R-HSA-379401",
                     "R-HSA-379398", "R-HSA-379397", "R-HSA-380615", "R-HSA-380612",
                     "R-HSA-112314", "R-HSA-181431", "R-HSA-629602", "R-HSA-622327",
@@ -438,7 +438,7 @@ Vesicle_mediated_transport <-  c("R-HSA-5653656", "R-HSA-2173782", "R-HSA-300048
 vesicle_transport_seeker <- data.frame(Vesicle_mediated_transport,stringsAsFactors = F)
 # usethis::use_data(vesicle_transport_seeker)
 
-Metabolism <- c( "R-HSA-1430728","R-HSA-71387","R-HSA-71336","R-HSA-73843","R-HSA-8853383",
+Metabolism <- c( "R-HSA-434313","R-HSA-1430728","R-HSA-71387","R-HSA-71336","R-HSA-73843","R-HSA-8853383",
                  "R-HSA-5653890","R-HSA-1630316","R-HSA-174362","R-HSA-1638074","R-HSA-2022857",
                  "R-HSA-2022854","R-HSA-2142845","R-HSA-2160916","R-HSA-2142850","R-HSA-1638091",
                  "R-HSA-2024096","R-HSA-2022928","R-HSA-1793185","R-HSA-2022923",
@@ -490,14 +490,14 @@ Metabolism <- c( "R-HSA-1430728","R-HSA-71387","R-HSA-71336","R-HSA-73843","R-HS
 metabolism_seeker <- data.frame(Metabolism,stringsAsFactors = F)
 # usethis::use_data(metabolism_seeker, overwrite = TRUE)
 
-Signal_Transduction <-  c( "R-HSA-9009391","R-HSA-9634638","R-HSA-162582", "R-HSA-9006925", "R-HSA-1257604", "R-HSA-6807070", "R-HSA-8948751",
+Signal_Transduction <-  c( "R-HSA-9027277","R-HSA-9036866","R-HSA-9029569","R-HSA-9009391","R-HSA-9634638","R-HSA-162582", "R-HSA-9006925", "R-HSA-1257604", "R-HSA-6807070", "R-HSA-8948751",
                          "R-HSA-8943723", "R-HSA-8948700", "R-HSA-8948747", "R-HSA-8943724", "R-HSA-199418", "R-HSA-9634635",
                          "R-HSA-6811558", "R-HSA-198693", "R-HSA-198323", "R-HSA-1489509", "R-HSA-111997",
                          "R-HSA-1119332", "R-HSA-1119312", "R-HSA-163615", "R-HSA-111957", "R-HSA-111932",
                          "R-HSA-9006921", "R-HSA-354192", "R-HSA-372708", "R-HSA-354194", "R-HSA-73887",
                          "R-HSA-193704", "R-HSA-193639", "R-HSA-209543", "R-HSA-209560", "R-HSA-193697",
                          "R-HSA-209563", "R-HSA-193634", "R-HSA-193670", "R-HSA-193692", "R-HSA-205017",
-                         "R-HSA-193681", "R-HSA-204998", "R-HSA-205043", "R-HSA-193648", "R-HSA-205025",
+                         "R-HSA-193681", "R-HSA-204998", "R-HSA-205043", "R-HSA-193648", "R-HSA-205025","R-HSA-9009391",
                          "R-HSA-75158", "R-HSA-75893", "R-HSA-5626978", "R-HSA-5357786", "R-HSA-5357956",
                          "R-HSA-5357905", "R-HSA-75157", "R-HSA-165159", "R-HSA-166208", "R-HSA-165181",
                          "R-HSA-380972", "R-HSA-195721", "R-HSA-3238698", "R-HSA-201681", "R-HSA-201688",
@@ -545,7 +545,7 @@ Signal_Transduction <-  c( "R-HSA-9009391","R-HSA-9634638","R-HSA-162582", "R-HS
                          "R-HSA-1912399", "R-HSA-1912420", "R-HSA-2586552", "R-HSA-2028269", "R-HSA-5358351",
                          "R-HSA-5358346", "R-HSA-5362798", "R-HSA-5632684", "R-HSA-5632681", "R-HSA-5635851",
                          "R-HSA-5635838", "R-HSA-5610787", "R-HSA-5610785", "R-HSA-5610783", "R-HSA-5610780",
-                         "R-HSA-372790", "R-HSA-500792", "R-HSA-420499", "R-HSA-373080", "R-HSA-420092",
+                         "R-HSA-372790", "R-HSA-500792", "R-HSA-420499", "R-HSA-373080", "R-HSA-420092","R-HSA-9024446",
                          "R-HSA-419812", "R-HSA-373076", "R-HSA-375276", "R-HSA-388479", "R-HSA-380095", "R-HSA-9006335",
                          "R-HSA-444821", "R-HSA-389397", "R-HSA-444473", "R-HSA-380108", "R-HSA-419771", "R-HSA-9034015",
                          "R-HSA-418038", "R-HSA-417957", "R-HSA-417973", "R-HSA-419408", "R-HSA-3296197", "R-HSA-167044",
@@ -554,10 +554,10 @@ Signal_Transduction <-  c( "R-HSA-9009391","R-HSA-9634638","R-HSA-162582", "R-HS
                          "R-HSA-390696", "R-HSA-388396", "R-HSA-397795", "R-HSA-418217", "R-HSA-392451", "R-HSA-9013694",
                          "R-HSA-418597", "R-HSA-418555", "R-HSA-381753", "R-HSA-416476", "R-HSA-881907", "R-HSA-9604323",
                          "R-HSA-2179392", "R-HSA-418594", "R-HSA-2187338", "R-HSA-2187335", "R-HSA-2514856",
-                         "R-HSA-2514859", "R-HSA-2485179", "R-HSA-2453902", "R-HSA-111885", "R-HSA-112040",
+                         "R-HSA-2514859", "R-HSA-2485179", "R-HSA-2453902", "R-HSA-111885", "R-HSA-112040","R-HSA-9009391",
                          "R-HSA-112043", "R-HSA-111996", "R-HSA-111995", "R-HSA-170670", "R-HSA-170660", "R-HSA-9013700",
                          "R-HSA-202040", "R-HSA-180024", "R-HSA-416482", "R-HSA-5683057", "R-HSA-5687128",
-                         "R-HSA-5684996", "R-HSA-5673001", "R-HSA-5658442", "R-HSA-5673000", "R-HSA-5675221",
+                         "R-HSA-5684996", "R-HSA-5673001", "R-HSA-5658442", "R-HSA-5673000", "R-HSA-5675221","R-HSA-9634638",
                          "R-HSA-5674499", "R-HSA-5674135", "R-HSA-112409", "R-HSA-110056", "R-HSA-112411", "R-HSA-111933")
 signal_transduction_seeker <- data.frame(Signal_Transduction,stringsAsFactors = F)
 # usethis::use_data(signal_transduction_seeker, overwrite = TRUE)
