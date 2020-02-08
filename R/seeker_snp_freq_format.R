@@ -52,7 +52,7 @@ seeker_snp_freq_format <- function(data){
     if (nrow(df) < 64){
 
       incompletos[[i]] <- list_snp[[i]]
-
+      print(i)
     }
 
     if(nrow(df) > 64) {
@@ -73,8 +73,12 @@ seeker_snp_freq_format <- function(data){
 
   }
 
-  incompletos[sapply(incompletos, is.null)] <- NULL
 
+  if(length(incompletos)!=0){
+
+    incompletos[sapply(incompletos, is.null)] <- NULL
+
+  }
   # print("estamos en este paso")
   #Arrange Completos, incompletos and tres_alelos
   # print(completos[[1]])
@@ -122,31 +126,49 @@ seeker_snp_freq_format <- function(data){
 
 
   # INCOMPLETE CASES
+  if(length(incompletos)!=0){
+    for (i in 1:length(incompletos)){
 
-  for (i in 1:length(incompletos)){
+      incomplete_df <- incompletos[[i]]
 
-    incomplete_df <- incompletos[[i]]
+      mydf_incomplete <- data.frame()
+      for (j in seq(from=1, to= nrow(incomplete_df), by=2)){
 
-    mydf_incomplete <- data.frame()
-    for (j in seq(from=1, to= nrow(incomplete_df), by=2)){
-
-      if(j == nrow(incomplete_df)){
-        break
-      }
+        if(j == nrow(incomplete_df)){
+          break
+        }
 
 
-      if (incomplete_df$population[j]==incomplete_df$population[c(j+1)]){
+        if (incomplete_df$population[j]==incomplete_df$population[c(j+1)]){
 
-        tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[c(j, j+1)],
-                                     allele=incomplete_df$allele[c(j, j+1)],
-                                     population=incomplete_df$population[c(j, j+1)],
-                                     frequency=incomplete_df$frequency[c(j, j+1)])
-        mydf_incomplete <- rbind(mydf_incomplete,
-                                 tmp_incomplete)
+          tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[c(j, j+1)],
+                                       allele=incomplete_df$allele[c(j, j+1)],
+                                       population=incomplete_df$population[c(j, j+1)],
+                                       frequency=incomplete_df$frequency[c(j, j+1)])
+          mydf_incomplete <- rbind(mydf_incomplete,
+                                   tmp_incomplete)
 
-      } else {
+        } else {
 
-        if(incomplete_df$frequency[j]< 1){
+          if(incomplete_df$frequency[j]< 1){
+
+            tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
+                                         allele=incomplete_df$allele[j],
+                                         population=incomplete_df$population[j],
+                                         frequency=incomplete_df$frequency[j])
+
+            tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
+                                  allele=incomplete_df$allele[j+1],
+                                  population=incomplete_df$population[j],
+                                  frequency=(1-incomplete_df$frequency[j]))
+
+            mydf_incomplete <- rbind(mydf_incomplete,
+                                     tmp_incomplete,
+                                     tmp_inc)
+
+            next
+
+          }
 
           tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
                                        allele=incomplete_df$allele[j],
@@ -156,35 +178,19 @@ seeker_snp_freq_format <- function(data){
           tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
                                 allele=incomplete_df$allele[j+1],
                                 population=incomplete_df$population[j],
-                                frequency=(1-incomplete_df$frequency[j]))
-
+                                frequency=0)
           mydf_incomplete <- rbind(mydf_incomplete,
                                    tmp_incomplete,
                                    tmp_inc)
 
-          next
-
         }
-
-        tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
-                                     allele=incomplete_df$allele[j],
-                                     population=incomplete_df$population[j],
-                                     frequency=incomplete_df$frequency[j])
-
-        tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
-                              allele=incomplete_df$allele[j+1],
-                              population=incomplete_df$population[j],
-                              frequency=0)
-        mydf_incomplete <- rbind(mydf_incomplete,
-                                 tmp_incomplete,
-                                 tmp_inc)
-
       }
+
+      incompletos[[i]] <- mydf_incomplete
+
     }
-
-    incompletos[[i]] <- mydf_incomplete
-
   }
+
 
   # print(incompletos)
   # print("casi terminamos")
@@ -196,69 +202,76 @@ seeker_snp_freq_format <- function(data){
                             population=example_pop$population,
                             frequency=example_pop$frequency)
 
-  for(i in 1:length(incompletos)){
+  if(length(incompletos)!=0){
+    for(i in 1:length(incompletos)){
 
-    dummy_data <- incompletos[[i]]
-    missing_pop <- example_pop$population %in% dummy_data$population
+      dummy_data <- incompletos[[i]]
+      missing_pop <- example_pop$population %in% dummy_data$population
 
-    tmp_pop <- data.frame()
-    for(j in seq(from=1, to=64, by=2)){
+      tmp_pop <- data.frame()
+      for(j in seq(from=1, to=64, by=2)){
 
-      if(missing_pop[j]==TRUE){
+        if(missing_pop[j]==TRUE){
 
-        pop_wa <- example_pop[j,3]
-        pop_catch <- dummy_data[dummy_data$population %in% pop_wa, c(1,2,3,4)]
-        tmp_pop <- rbind(tmp_pop, pop_catch)
+          pop_wa <- example_pop[j,3]
+          pop_catch <- dummy_data[dummy_data$population %in% pop_wa, c(1,2,3,4)]
+          tmp_pop <- rbind(tmp_pop, pop_catch)
 
-      } else {
+        } else {
 
-        pop_catch <- data.frame(SNP= dummy_data[c(1,2),1],
-                                allele= dummy_data[c(1,2),2],
-                                population = example_pop[c(j,j+1), 3],
-                                frequency=c(1,0))
-        tmp_pop <- rbind(tmp_pop, pop_catch)
+          pop_catch <- data.frame(SNP= dummy_data[c(1,2),1],
+                                  allele= dummy_data[c(1,2),2],
+                                  population = example_pop[c(j,j+1), 3],
+                                  frequency=c(1,0))
+          tmp_pop <- rbind(tmp_pop, pop_catch)
+
+        }
 
       }
 
+      incompletos[[i]] <- tmp_pop
     }
 
-    incompletos[[i]] <- tmp_pop
+    # return(incompletos)
+
+
+    mydf_non <- data.frame()
+
+    for (i in 1:length(incompletos)){
+
+      df_incompletos <- incompletos[[i]]
+
+      if(nrow(incompletos[[i]] > 64)){
+        next
+      }
+
+      for(j in seq(from= 1, to=nrow(df_incompletos), by=2)){
+
+        ordered_freq <- sort(df_incompletos[c(j,j+1), 4], decreasing = TRUE)
+        df_incompletos[c(j,j+1), 4] <- ordered_freq
+
+      }
+
+      df_completos_1 <- data.frame(t(df_incompletos[,c(3,4)]))
+      colnames(df_completos_1) <- names_pop
+      df_completos_1 <- df_completos_1[-1,]
+
+      df_completos_2 <- cbind(SNP = df_completos[1,1], df_completos_1,
+                              Ancestral = df_completos$allele[1],
+                              Minor = df_completos$allele[2])
+
+      mydf_non <- rbind(mydf_non, df_completos_2)
+
+
+    }
   }
 
-  # return(incompletos)
-
-
-  mydf_non <- data.frame()
-
-  for (i in 1:length(incompletos)){
-
-    df_incompletos <- incompletos[[i]]
-
-    if(nrow(incompletos[[i]] > 64)){
-      next
-    }
-
-    for(j in seq(from= 1, to=nrow(df_incompletos), by=2)){
-
-      ordered_freq <- sort(df_incompletos[c(j,j+1), 4], decreasing = TRUE)
-      df_incompletos[c(j,j+1), 4] <- ordered_freq
-
-    }
-
-    df_completos_1 <- data.frame(t(df_incompletos[,c(3,4)]))
-    colnames(df_completos_1) <- names_pop
-    df_completos_1 <- df_completos_1[-1,]
-
-    df_completos_2 <- cbind(SNP = df_completos[1,1], df_completos_1,
-                            Ancestral = df_completos$allele[1],
-                            Minor = df_completos$allele[2])
-
-    mydf_non <- rbind(mydf_non, df_completos_2)
-
+  if(length(incompletos)!=0){
+    mydf_all <- rbind(mydf_complete, mydf_non)
+  } else {
+    mydf_all <- mydf_complete
 
   }
-
-  mydf_all <- rbind(mydf_complete, mydf_non)
 
   for (i in 2:65) {
 
