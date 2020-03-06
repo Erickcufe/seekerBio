@@ -281,6 +281,7 @@ seeker_snp_freq_format <- function(data){
 
   rownames(mydf_all) <- NULL
 
+  if(length(tres_alelos)>1){
   data_for_three <- data.frame()
   for (i in 1:length(tres_alelos)) {
 
@@ -299,8 +300,8 @@ seeker_snp_freq_format <- function(data){
     }
     bb1 <- seekerBio::seeker_snp_freq_format(bb)
     data_for_three <- rbind(data_for_three, bb1)
+    }
   }
-
   mydf_all <- rbind(mydf_all, data_for_three)
   # message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
