@@ -280,7 +280,29 @@ seeker_snp_freq_format <- function(data){
   }
 
   rownames(mydf_all) <- NULL
-  message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
+
+  data_for_three <- data.frame()
+  for (i in 1:length(tres_alelos)) {
+
+    pp <- tres_alelos[[i]]
+    pp$population <- as.factor(pp$population)
+    bb <- data.frame()
+    for(i in levels(pp$population)){
+
+      a <- pp[pp$population==i,]
+      e <- which.min(a$frequency)
+      d <- which.max(a$frequency)
+      a <- a[c(d,e),]
+
+      bb <- rbind(bb, a)
+
+    }
+    bb1 <- seekerBio::seeker_snp_freq_format(bb)
+    data_for_three <- rbind(data_for_three, bb1)
+  }
+
+  mydf_all <- rbind(mydf_all, data_for_three)
+  # message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
 
 
