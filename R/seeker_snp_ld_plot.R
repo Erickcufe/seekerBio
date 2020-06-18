@@ -10,6 +10,7 @@
 #' @param d_prime Measure of LD. If D' is provided only return pairs of variants whose D' value is equal to or greater than the value provided.
 #' Default 0
 #' @param color_select Select a color for the plot; Default= "cyan"
+#' @param plot_all If TRUE, the function plot all the labels of SNPs with a r2 > 0.6. If it is FALSE, the function only plot the label of the SNP
 #'
 #' @importFrom
 #' ggrepel geom_label_repel
@@ -34,7 +35,8 @@
 #'
 #' @export seeker_snp_ld_plot
 seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
-                               window_size = 500, d_prime = 0, color_select = "cyan") {
+                               window_size = 500, d_prime = 0, color_select = "cyan",
+                               plot_all= TRUE) {
 
   LD <- seekerBio::seeker_snp_ld(SNP, population = population_study)
 
@@ -51,6 +53,7 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
 
   label1 <- paste("Chr", variation_snp$seq_region_name)
 
+  if(plot_all==TRUE){
   ggplot(data = to_plot, aes(x = start, y = as.numeric(r2))) +
     geom_point(data = to_plot, aes(colour = as.numeric(d_prime)) ,alpha = 0.75, size = 2) + geom_point(data = variation_snp,
                                                     aes(x = start, y = as.numeric(r2)),
@@ -76,5 +79,34 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
                nudge_x = 0.8, nudge_y = 0.02,
                color="black") +
     ggtitle(population_study) + labs(colour = "D'")
+  } else {
+
+    ggplot(data = to_plot, aes(x = start, y = as.numeric(r2))) +
+      geom_point(data = to_plot, aes(colour = as.numeric(d_prime)) ,alpha = 0.75, size = 2) + geom_point(data = variation_snp,
+                                                                                                         aes(x = start, y = as.numeric(r2)),
+                                                                                                         size= 4,
+                                                                                                         color= "black",
+                                                                                                         alpha= 0.8) +
+      theme_minimal() + geom_area(aes(start), data=to_plot, alpha= 0.2,
+                                  fill= color_select, color="black") +
+      scale_color_gradient(low="green", high="red") +
+      ggrepel::geom_label_repel(aes(label=ifelse(r2==1,as.character(SNP),'')), box.padding= 0.2,
+                                point.padding = 0.3,
+                                segment.color = 'grey50') +
+      theme(axis.text.x = element_text(angle = 60, hjust = 0.9, size = 20),
+            axis.text.y =element_text(size=20),axis.text.y.right = element_text(size=20),
+            plot.title = element_text(hjust = 0.5, size=30),
+            legend.title = element_text(size = 20),
+            legend.text = element_text(size = 20),
+            axis.title.x=element_text(size=20),
+            axis.title.y = element_text(size=20)) +
+      xlab (label1) + ylab("r2") +
+      geom_label(data= variation_snp,
+                 aes(x = start, y= as.numeric(r2)), label= variation_snp$SNP,
+                 nudge_x = 0.8, nudge_y = 0.02,
+                 color="black") +
+      ggtitle(population_study) + labs(colour = "D'")
+
+  }
 
 }

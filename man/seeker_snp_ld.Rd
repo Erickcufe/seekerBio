@@ -10,20 +10,33 @@
 https://rest.ensembl.org
 }
 \usage{
-seeker_snp_ld(ID, population = "1000GENOMES:phase_3:MXL",
-  window_size = 500, d_prime = 0)
+seeker_snp_ld(
+  ID,
+  population = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0
+)
 
-\method{seeker_snp_ld}{character}(ID,
-  population = "1000GENOMES:phase_3:MXL", window_size = 500,
-  d_prime = 0)
+\method{seeker_snp_ld}{character}(
+  ID,
+  population = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0
+)
 
-\method{seeker_snp_ld}{factor}(ID,
-  population = "1000GENOMES:phase_3:MXL", window_size = 500,
-  d_prime = 0)
+\method{seeker_snp_ld}{factor}(
+  ID,
+  population = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0
+)
 
-\method{seeker_snp_ld}{data.frame}(ID,
-  population = "1000GENOMES:phase_3:MXL", window_size = 500,
-  d_prime = 0)
+\method{seeker_snp_ld}{data.frame}(
+  ID,
+  population = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0
+)
 }
 \arguments{
 \item{ID}{A Single Nucleotide Polymorphism ID ("rs") in character or data.frame}

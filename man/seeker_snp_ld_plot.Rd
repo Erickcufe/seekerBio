@@ -4,8 +4,14 @@
 \alias{seeker_snp_ld_plot}
 \title{seeker_snp_ld_plot}
 \usage{
-seeker_snp_ld_plot(SNP, population_study = "1000GENOMES:phase_3:MXL",
-  window_size = 500, d_prime = 0, color_select = "cyan")
+seeker_snp_ld_plot(
+  SNP,
+  population_study = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0,
+  color_select = "cyan",
+  plot_all = TRUE
+)
 }
 \arguments{
 \item{SNP}{A Single Nucleotide Polymorphism ID ("rs") in character.}
@@ -20,6 +26,8 @@ Default 500}
 Default 0}
 
 \item{color_select}{Select a color for the plot; Default= "cyan"}
+
+\item{plot_all}{If TRUE, the function plot all the labels of SNPs with a r2 > 0.6. If it is FALSE, the function only plot the label of the SNP}
 }
 \value{
 A plot, in x axis the position in the chromosome, in y axis the r2 of linkage desequilibrium
