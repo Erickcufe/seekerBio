@@ -4,8 +4,13 @@
 \alias{seeker_haploview}
 \title{seeker_haploview}
 \usage{
-seeker_haploview(SNP, population_study = "1000GENOMES:phase_3:MXL",
-  window_size = 500, d_prime = 0, color_select = "cyan")
+seeker_haploview(
+  SNP,
+  population_study = "1000GENOMES:phase_3:MXL",
+  window_size = 500,
+  d_prime = 0,
+  color_select = "cyan"
+)
 }
 \arguments{
 \item{SNP}{A Single Nucleotide Polymorphism ID ("rs") in character.}
