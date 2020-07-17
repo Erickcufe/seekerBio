@@ -52,7 +52,7 @@ seeker_snp_freq_format <- function(data){
     if (nrow(df) < 64){
 
       incompletos[[i]] <- list_snp[[i]]
-      print(i)
+
     }
 
     if(nrow(df) > 64) {
