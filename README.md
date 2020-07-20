@@ -19,6 +19,12 @@ Antonio Fabregat, Steven Jupe, Lisa Matthews, Konstantinos Sidiropoulos, Marc Gi
 
 Andrew Yates, Kathryn Beal, Stephen Keenan, William McLaren, Miguel Pignatelli, Graham R. S. Ritchie, Magali Ruffier, Kieron Taylor, Alessandro Vullo, Paul Flicek, The Ensembl REST API: Ensembl Data for Any Language, Bioinformatics, Volume 31, Issue 1, 1 January 2015, Pages 143–145, https://doi.org/10.1093/bioinformatics/btu613
 
+[GWAS Catalog](https://www.ebi.ac.uk/gwas/)
+
+Buniello A, MacArthur JAL, Cerezo M, Harris LW, Hayhurst J, Malangone C, McMahon A, Morales J, Mountjoy E, Sollis E, Suveges D, Vrousgou O, Whetzel PL, Amode R, Guillen JA, Riat HS, Trevanion SJ, Hall P, Junkins H, Flicek P, Burdett T, Hindorff LA, Cunningham F and Parkinson H.
+The NHGRI-EBI GWAS Catalog of published genome-wide association studies, targeted arrays and summary statistics 2019.
+Nucleic Acids Research, 2019, Vol. 47 (Database issue): D1005-D1012.
+
 
 ## Examples:
 ```{r}
@@ -28,3 +34,10 @@ library(seekerBio)
 seeker_snp_ld_plot("rs7412", population_study="1000GENOMES:phase_3:FIN", color_select = "green")
 ```
 
+```{r}
+seeker_gwas("Obesity")
+```
+```{r}
+snps <- seeker_snp_freq("rs7412")
+ordered_snps <- seeker_snp_freq_format(snps)
+```
