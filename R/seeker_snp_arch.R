@@ -45,7 +45,7 @@ seeker_snp_arch <- function(ID){
 #' @export
 seeker_snp_arch.character <- function(ID){
 
-  message(paste(Sys.time(), 'Running `seeker_snp_arch` for character'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_arch` for character'))
 
   if (length(ID)==1){
     server <- "http://rest.ensembl.org/variation/human/"
@@ -72,7 +72,7 @@ seeker_snp_arch.character <- function(ID){
 #' @export
 seeker_snp_arch.factor <- function(ID){
 
-  message(paste(Sys.time(), 'Running `seeker_snp_arch` for factor'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_arch` for factor'))
 
   if (length(ID)==1){
     server <- "http://rest.ensembl.org/variation/human/"
@@ -98,7 +98,7 @@ seeker_snp_arch.factor <- function(ID){
 #' @rdname seeker_snp_arch
 #' @export
 seeker_snp_arch.data.frame <- function(ID){
-  message(paste(Sys.time(), 'Running `seeker_snp_arch` for data.frame'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_arch` for data.frame'))
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
@@ -106,7 +106,7 @@ seeker_snp_arch.data.frame <- function(ID){
   future::plan(multiprocess)
 
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

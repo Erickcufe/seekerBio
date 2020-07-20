@@ -22,7 +22,9 @@
 #' @rdname seeker_pathway_order
 #' @export seeker_pathway_order
 seeker_pathway_order <- function(pathways){
-  message(paste(Sys.time(), 'empezando a correr `seeker_pathway_order`'))
+  # message(paste(Sys.time(), 'empezando a correr `seeker_pathway_order`'))
+
+
   #### LOOPS PARA AGRUPAR
   for(i in 1:nrow(pathways)){
     for (j in 1:nrow(seekerBio::metabolism_seeker)){

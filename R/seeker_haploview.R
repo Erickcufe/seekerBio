@@ -67,19 +67,17 @@ seeker_haploview <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
 
   label1 <- paste("Chr", variation_snp$seq_region_name)
 
-  a <- ifelse(levels(finder_3$v2) == SNP, "red", "black")
-
   ggplot2::ggplot(finder_3, aes(x = v1, y= v2)) +
     geom_tile(aes(fill=r2), color= 'white') +
     scale_fill_gradient2(low="blue", high="red", mid="yellow",
-                                        midpoint = 0.5,
-                                        limit=c(0.1,1),
-                                        space = "Lab",
-                                        name="r2") +
+                         midpoint = 0.5,
+                         limit=c(0.1,1),
+                         space = "Lab",
+                         name="r2") +
     theme_minimal()  +
     coord_fixed() + theme(panel.grid = element_blank()) +
-    theme(axis.text.x = element_text(angle = 60, hjust = 0.9, size = 20, color = a),
-          axis.text.y =element_text(size=20, color=a),
+    theme(axis.text.x = element_text(angle = 60, hjust = 0.9, size = 20),
+          axis.text.y =element_text(size=20),
           axis.text.y.right = element_text(size=20),
           axis.ticks=element_blank(),
           axis.line=element_blank(),

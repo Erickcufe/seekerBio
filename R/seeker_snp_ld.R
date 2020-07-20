@@ -105,7 +105,7 @@ seeker_snp_ld.factor <- function(ID, population = "1000GENOMES:phase_3:MXL",
 seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
                                      window_size = 500, d_prime = 0){
 
-  message(paste(Sys.time(), 'Running `seeker_snp_ld` for data.frame'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_ld` for data.frame'))
 
   ID1 <- as.matrix(ID)
   server_2 <- "https://rest.ensembl.org/ld/human/"
@@ -118,7 +118,7 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   future::plan(multiprocess)
 
   contents <- furrr::future_map(URL_LD, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

@@ -47,7 +47,7 @@ seeker_gen_pathway <- function(x) {
 #' @export
 seeker_gen_pathway.character <- function(x) {
 
-  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for character'))
+  # message(paste(Sys.time(), 'Running `seeker_gen_pathway` for character'))
 
 
   if (length(x)==1){
@@ -77,7 +77,7 @@ seeker_gen_pathway.character <- function(x) {
 #' @rdname seeker_gen_pathway
 #' @export
 seeker_gen_pathway.factor <- function(x) {
-  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for factor'))
+  # message(paste(Sys.time(), 'Running `seeker_gen_pathway` for factor'))
   if (length(x)==1){
 
   server="https://reactome.org/AnalysisService/identifier/"
@@ -106,7 +106,7 @@ seeker_gen_pathway.factor <- function(x) {
 #' @export
 seeker_gen_pathway.data.frame <- function(x) {
 
-  message(paste(Sys.time(), 'Running `seeker_gen_pathway` for data.frame'))
+  # message(paste(Sys.time(), 'Running `seeker_gen_pathway` for data.frame'))
   ID1 <- as.matrix(x)
 
   mydf <- data.frame()
@@ -118,7 +118,7 @@ seeker_gen_pathway.data.frame <- function(x) {
   future::plan(multiprocess)
 
   contents <- furrr::future_map(url_reactome, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 

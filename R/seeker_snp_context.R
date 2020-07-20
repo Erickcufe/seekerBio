@@ -42,7 +42,7 @@ seeker_snp_context <- function(SNP) {
 #' @rdname seeker_snp_context
 #' @export
 seeker_snp_context.factor <- function(SNP){
-  message(paste(Sys.time(), 'Running `seeker_snp_context` for factor'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_context` for factor'))
 
   if (length(SNP)==1){
 
@@ -63,7 +63,7 @@ seeker_snp_context.factor <- function(SNP){
 #' @rdname seeker_snp_context
 #' @export
 seeker_snp_context.character <- function(SNP){
-  message(paste(Sys.time(), 'Running `seeker_snp_context` for character'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_context` for character'))
 
   if (length(SNP)==1){
 
@@ -195,7 +195,7 @@ seeker_snp_context.character <- function(SNP){
 #' @export
 seeker_snp_context.data.frame <- function(SNP){
 
-  message(paste(Sys.time(), 'Running `seeker_snp_context` for data.frame'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_context` for data.frame'))
 
 
   SNPs <- as.matrix(SNP)
@@ -208,7 +208,7 @@ seeker_snp_context.data.frame <- function(SNP){
   future::plan(multiprocess)
 
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
 
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]

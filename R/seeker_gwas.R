@@ -35,7 +35,7 @@ seeker_gwas <- function(trait) {
 #' @rdname seeker_gwas
 #' @export
 seeker_gwas.character <- function(trait){
-  message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
+  # message(paste(Sys.time(), 'empezando a correr `seeker_gen_pathway`'))
   trait <-  strsplit(trait, " ")
 
   if (!is.na(trait[[1]][3])){

@@ -45,7 +45,7 @@ seeker_snp_freq <- function(ID, study = "1000GENOMES:phase_3") {
 #' @rdname seeker_snp_freq
 #' @export
 seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
-  message(paste(Sys.time(), 'Running `seeker_snp_freq` for character'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_freq` for character'))
 
   if (length(ID)==1){
   server <- "http://rest.ensembl.org/variation/human/"
@@ -74,7 +74,7 @@ seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
 #' @rdname seeker_snp_freq
 #' @export
 seeker_snp_freq.factor <- function(ID, study = "1000GENOMES:phase_3"){
-  message(paste(Sys.time(), 'Running `seeker_snp_freq` for factor'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_freq` for factor'))
 
   if (length(ID)==1){
     server <- "http://rest.ensembl.org/variation/human/"
@@ -103,7 +103,7 @@ seeker_snp_freq.factor <- function(ID, study = "1000GENOMES:phase_3"){
 #' @rdname seeker_snp_freq
 #' @export
 seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
-  message(paste(Sys.time(), 'Running `seeker_snp_freq` for data.frame'))
+  # message(paste(Sys.time(), 'Running `seeker_snp_freq` for data.frame'))
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
@@ -112,7 +112,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   future::plan(multiprocess)
 
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
