@@ -28,3 +28,6 @@ library(seekerBio)
 seeker_snp_ld_plot("rs7412", population_study="1000GENOMES:phase_3:FIN", color_select = "green")
 ```
 
+```{r}
+seeker_snp_freq("rs7412", "rs12952")
+```
