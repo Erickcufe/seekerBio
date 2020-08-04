@@ -35,13 +35,13 @@ seeker_snp_ld_plot("rs7412", population_study="1000GENOMES:phase_3:FIN", color_s
 ```
 
 ```{r}
-<<<<<<< HEAD
+
 seeker_snp_freq("rs7412", "rs12952")
-=======
+
 seeker_gwas("Obesity")
 ```
 ```{r}
 snps <- seeker_snp_freq("rs7412")
 ordered_snps <- seeker_snp_freq_format(snps)
->>>>>>> 1df337ae803ee9e3782e3d58d13df733ef8d94f9
+
 ```
