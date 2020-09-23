@@ -196,28 +196,20 @@ seeker_snp_freq_format <- function(data){
   }
 
 
-  # print(incompletos)
-  # print("casi terminamos")
 
-
-  example_pop <- completos[[1]]
-  example_pop <- data.frame(SNP=example_pop$SNP,
-                            allele=example_pop$allele,
-                            population=example_pop$population,
-                            frequency=example_pop$frequency)
-
+  example_pop <- seekerBio::populations_1000G
   if(length(incompletos)!=0){
     for(i in 1:length(incompletos)){
 
       dummy_data <- incompletos[[i]]
-      missing_pop <- example_pop$population %in% dummy_data$population
+      missing_pop <- example_pop %in% dummy_data$population
 
       tmp_pop <- data.frame()
       for(j in seq(from=1, to=64, by=2)){
 
         if(missing_pop[j]==TRUE){
 
-          pop_wa <- example_pop[j,3]
+          pop_wa <- example_pop[j]
           pop_catch <- dummy_data[dummy_data$population %in% pop_wa, c(1,2,3,4)]
           tmp_pop <- rbind(tmp_pop, pop_catch)
 
@@ -225,7 +217,7 @@ seeker_snp_freq_format <- function(data){
 
           pop_catch <- data.frame(SNP= dummy_data[c(1,2),1],
                                   allele= dummy_data[c(1,2),2],
-                                  population = example_pop[c(j,j+1), 3],
+                                  population = example_pop[c(j,j+1)],
                                   frequency=c(1,0))
           tmp_pop <- rbind(tmp_pop, pop_catch)
 
