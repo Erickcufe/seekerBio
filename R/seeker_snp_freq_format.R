@@ -64,8 +64,11 @@ seeker_snp_freq_format <- function(data){
   }
 
 
+  if(length(completos)!=0){
 
   completos[sapply(completos, is.null)] <- NULL
+
+  }
 
   if(length(tres_alelos)!=0){
 
