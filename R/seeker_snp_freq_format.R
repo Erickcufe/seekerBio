@@ -257,8 +257,8 @@ seeker_snp_freq_format <- function(data){
       df_completos_1 <- df_completos_1[-1,]
 
       df_completos_2 <- cbind(SNP = df_incompletos[1,1], df_completos_1,
-                              Ancestral = df_incompletos$allele[1],
-                              Minor = df_incompletos$allele[2])
+                              Ancestral = df_incompletos$allele[5],
+                              Minor = df_incompletos$allele[6])
 
       mydf_non <- rbind(mydf_non, df_completos_2)
 
