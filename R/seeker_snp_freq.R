@@ -109,7 +109,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
 
 
-  future::plan(multiprocess)
+  future::plan("multiprocess")
 
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
