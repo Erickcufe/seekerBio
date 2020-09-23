@@ -282,26 +282,35 @@ seeker_snp_freq_format <- function(data){
   rownames(mydf_all) <- NULL
 
   if(length(tres_alelos)>1){
-  data_for_three <- data.frame()
-  for (i in 1:length(tres_alelos)) {
-
-    pp <- tres_alelos[[i]]
-    pp$population <- as.factor(pp$population)
+    data_for_three <- data.frame()
     bb <- data.frame()
-    for(i in levels(pp$population)){
+    for (i in 1:length(tres_alelos)) {
 
-      a <- pp[pp$population==i,]
-      e <- which.min(a$frequency)
-      d <- which.max(a$frequency)
-      a <- a[c(d,e),]
-
-      bb <- rbind(bb, a)
-
+      pp <- tres_alelos[[i]]
+      pp$population <- as.factor(pp$population)
+      stoped <- "1000GENOMES:phase_3:YRI"
+      indice <- which(pp$population==stoped)
+      if(length(indice) == 2){
+        if((indice[2] - indice[1]) > 1){
+          pp <- pp[1:indice[1], ]
+        } else {
+          if((indice[2] - indice[1]) == 1){
+            pp <- pp[1:indice[2], ]
+          }
+        }
       }
-    bb1 <- seekerBio::seeker_snp_freq_format(bb)
-    data_for_three <- rbind(data_for_three, bb1)
+
+      if(length(indice) > 2){
+        if((indice[2] - indice[1]) == 1){
+          pp <- pp[1:indice[2], ]
+        } else{
+          pp <- pp[1:indice[1], ]
+        }
+      }
+      bb <- rbind(bb, pp)
     }
-  mydf_all <- rbind(mydf_all, data_for_three)
+    data_for_three <- seekerBio::seeker_snp_freq_format(bb)
+    mydf_all <- rbind(mydf_all, data_for_three)
   } else {
     mydf_all <- mydf_all
   }
