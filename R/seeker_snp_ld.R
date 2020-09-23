@@ -115,7 +115,7 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   URL_LD <- paste0(server_2, ID1,"/",population, link1, window_size,
                    link2, d_prime, link3)
 
-  future::plan(multiprocess)
+  future::plan("multiprocess")
 
   contents <- furrr::future_map(URL_LD, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
