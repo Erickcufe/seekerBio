@@ -98,6 +98,7 @@ seeker_snp_freq_format <- function(data){
                  "YRI", "YRI_MAF")
 
   # COMPLETE CASES
+  if(length(completos)!=0){
   mydf_complete <- data.frame()
 
   for (i in 1:length(completos)){
@@ -124,7 +125,7 @@ seeker_snp_freq_format <- function(data){
 
     mydf_complete <- rbind(mydf_complete, df_completos_2)
 
-
+    }
   }
 
 
