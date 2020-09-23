@@ -134,7 +134,8 @@ seeker_snp_freq_format <- function(data){
     for (i in 1:length(incompletos)){
 
       incomplete_df <- incompletos[[i]]
-
+      menor <- incomplete_df[which(incomplete_df$frequency < 0.3)[1], "allele"]
+      mayor <- incomplete_df[which(incomplete_df$frequency == 1)[1], "allele"]
       mydf_incomplete <- data.frame()
       for (j in seq(from=1, to= nrow(incomplete_df), by=2)){
 
@@ -157,12 +158,12 @@ seeker_snp_freq_format <- function(data){
           if(incomplete_df$frequency[j]< 1){
 
             tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
-                                         allele=incomplete_df$allele[j],
+                                         allele=mayor,
                                          population=incomplete_df$population[j],
                                          frequency=incomplete_df$frequency[j])
 
             tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
-                                  allele=incomplete_df$allele[j+1],
+                                  allele=menor,
                                   population=incomplete_df$population[j],
                                   frequency=(1-incomplete_df$frequency[j]))
 
@@ -175,12 +176,12 @@ seeker_snp_freq_format <- function(data){
           }
 
           tmp_incomplete <- data.frame(SNP=incomplete_df$SNP[j],
-                                       allele=incomplete_df$allele[j],
+                                       allele=mayor,
                                        population=incomplete_df$population[j],
                                        frequency=incomplete_df$frequency[j])
 
           tmp_inc <- data.frame(SNP=incomplete_df$SNP[j],
-                                allele=incomplete_df$allele[j+1],
+                                allele=menor,
                                 population=incomplete_df$population[j],
                                 frequency=0)
           mydf_incomplete <- rbind(mydf_incomplete,
@@ -194,7 +195,6 @@ seeker_snp_freq_format <- function(data){
 
     }
   }
-
 
 
   example_pop <- seekerBio::populations_1000G
