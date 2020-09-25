@@ -96,7 +96,7 @@ seeker_snp_freq_format <- function(data){
                  "MXL", "MXL_MAF", "PEL", "PEL_MAF", "PJL", "PJL_MAF", "PUR",
                  "PUR_MAF", "SAS", "SAS_MAF", "STU", "STU_MAF", "TSI", "TSI_MAF",
                  "YRI", "YRI_MAF")
-
+  mydf_complete <- data.frame()
   # COMPLETE CASES
   if(length(completos)!=0){
   mydf_complete <- data.frame()
