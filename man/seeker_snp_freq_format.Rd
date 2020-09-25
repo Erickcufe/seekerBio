@@ -10,7 +10,7 @@ seeker_snp_freq_format(data)
 \item{data}{A data.frame, output of seeker_snp_freq()}
 }
 \value{
-A data.frame with the allel frequency in a horizontal format, with sorted frequencies.
+A list with the allele frequency in a horizontal format, with sorted frequencies. Two loci and three loci
 }
 \description{
 seeker_snp_freq_format

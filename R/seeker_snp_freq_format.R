@@ -3,7 +3,7 @@
 #' @param data A data.frame, output of seeker_snp_freq()
 #'
 #' @return
-#' A data.frame with the allel frequency in a horizontal format, with sorted frequencies.
+#' A list with the allele frequency in a horizontal format, with sorted frequencies. Two loci and three loci
 #'
 #' @author
 #' Erick Cuevas-Fernández
@@ -269,18 +269,29 @@ seeker_snp_freq_format <- function(data){
 
   }
 
+  if(length(incompletos)!=0){
   for (i in 2:65) {
 
     mydf_all[,i] <- as.numeric(as.character(mydf_all[,i]))
-
+    }
   }
 
   rownames(mydf_all) <- NULL
 
   if(length(tres_alelos)>1){
+
     data_for_three <- data.frame()
     bb <- data.frame()
+    bb_3 <- data.frame()
+    flag <- "1000GENOMES:phase_3:ALL"
+
     for (i in 1:length(tres_alelos)) {
+
+      if(sum(tres_alelos[[i]]$population == flag) == 3){
+        pp_3 <- tres_alelos[[i]]
+        bb_3 <- rbind(bb_3, pp_3)
+        next
+      }
 
       pp <- tres_alelos[[i]]
       pp$population <- as.factor(pp$population)
@@ -305,10 +316,12 @@ seeker_snp_freq_format <- function(data){
       }
       bb <- rbind(bb, pp)
     }
+    # ojo, volver a cambiar a seekerBio::seeker_snp_freq_format(bb)
     data_for_three <- seekerBio::seeker_snp_freq_format(bb)
-    mydf_all <- rbind(mydf_all, data_for_three)
+    mydf_all <- rbind(mydf_all, data_for_three[[1]])
+    mydf_all <- list(Two_loci = mydf_all, Three_loci = bb_3)
   } else {
-    mydf_all <- mydf_all
+    mydf_all <- list(Two_loci = mydf_all)
   }
 
   # message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
