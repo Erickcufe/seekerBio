@@ -5,7 +5,7 @@
 #' @param SNP A Single Nucleotide Polymorphism ID ("rs") in character or data.frame
 #'
 #' @return
-#' A data.frame with Type of variation & gene of each SNP
+#' A data.frame with Type of variation
 #'
 #' @source
 #' https://rest.ensembl.org
@@ -82,48 +82,7 @@ seeker_snp_context.character <- function(SNP){
     context <- contents_request[[1]]$most_severe_consequence
     snps_context <- data.frame(SNP = SNP, CONTEXT = context)
 
-    # For GENE
-    future::plan(multiprocess)
-    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                  .progress = TRUE)
-    contents_1 <- purrr::transpose(contents)
-    contents_request <- contents_1[["result"]]
-
-    vector_gene <- list()
-    for (i in 1:length(contents_request)){
-      request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
-      if (!is.null(request[[2]][["genes"]][[1]][["locus"]])){
-        context_SNP <- request[[2]][["genes"]][[1]][["locus"]]
-      } else {
-        if(!is.null(request[[1]][["genes"]][[1]][["locus"]])){
-          context_SNP <- request[[1]][["genes"]][[1]][["locus"]]
-        } else {
-          context_SNP <- "none"
-        }
-      }
-      vector_gene[[i]] <- context_SNP
-    }
-
-    SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
-
-    df_snp4 <- data.frame()
-    for (i in 1:length(SNPs_4)) {
-      if (length(SNPs_4[[i]])==1){
-        tmp_df <- data.frame(CONTEXT=SNPs_4[[i]])
-        df_snp4 <- rbind(df_snp4, tmp_df)
-      } else {
-        tmp_df <- data.frame(CONTEXT=paste(SNPs_4[[i]], collapse = ", "))
-        df_snp4 <- rbind(df_snp4, tmp_df)
-      }
-    }
-
-    genes <- cbind(SNPs_1,df_snp4)
-    genes <- data.frame(genes)
-    colnames(genes) <- c("SNP","GENE")
-    rownames(genes) <- NULL
-    context_gene <- cbind(snps_context, GENE=genes$GENE)
-    rownames(context_gene) <- NULL
-    return(context_gene)
+    return(snps_context)
 
   } else {
     df <- data.frame(SNP = SNP)
@@ -142,7 +101,7 @@ seeker_snp_context.data.frame <- function(SNP){
 
   SNPs <- as.matrix(SNP)
   URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
-  ligas <- paste0(URL_dbSNP,SNPs_1)
+  ligas <- paste0(URL_dbSNP,SNPs)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas_context <- paste0(server, SNPs,"?pops=1;content-type=application/json")
 
@@ -157,54 +116,15 @@ seeker_snp_context.data.frame <- function(SNP){
   for (i in 1:length(contents_request)) {
     context <- contents_request[[i]]$most_severe_consequence
     snp <- contents_request[[i]]$name
-    if(context == NULL){
+    if(is.null(context)){
       context <- "none"
+      next
     }
     df <- data.frame(SNP = snp, CONTEXT = context)
     snps_context <- rbind(snps_context, df)
 
   }
 
-  # For GENE
-  future::plan(multiprocess)
-  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                .progress = FALSE)
-
-  contents_1 <- purrr::transpose(contents)
-  contents_request <- contents_1[["result"]]
-  vector_gene <- list()
-  for (i in 1:length(contents_request)){
-    request <- contents_request[[i]]$primary_snapshot_data$allele_annotations$assembly_annotation
-    if (!is.null(request[[2]][["genes"]][[1]][["locus"]])){
-      context_SNP <- request[[2]][["genes"]][[1]][["locus"]]
-    } else {
-      if(!is.null(request[[1]][["genes"]][[1]][["locus"]])){
-        context_SNP <- request[[1]][["genes"]][[1]][["locus"]]
-      } else {
-        context_SNP <- "none"
-      }
-    }
-    vector_gene[[i]] <- context_SNP
-  }
-
-  SNPs_4 <- vector_gene[!sapply(vector_gene, is.null)]
-  df_snp4 <- data.frame()
-  for (i in 1:length(SNPs_4)) {
-    if (length(SNPs_4[[i]])==1){
-      tmp_df <- data.frame(CONTEXT=SNPs_4[[i]])
-      df_snp4 <- rbind(df_snp4, tmp_df)
-    } else {
-      tmp_df <- data.frame(CONTEXT=paste(SNPs_4[[i]], collapse = ", "))
-      df_snp4 <- rbind(df_snp4, tmp_df)
-    }
-  }
-
-  genes <- cbind(SNPs,df_snp4)
-  genes <- data.frame(genes)
-  colnames(genes) <- c("SNP","GENE")
-  rownames(genes) <- NULL
-  context_gene <- cbind(snps_context, GENE=genes$GENE)
-  rownames(context_gene) <- NULL
-  return(context_gene)
+  return(snps_context)
 }
 

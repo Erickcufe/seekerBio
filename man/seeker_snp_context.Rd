@@ -22,7 +22,7 @@ seeker_snp_context(SNP)
 \item{SNP}{A Single Nucleotide Polymorphism ID ("rs") in character or data.frame}
 }
 \value{
-A data.frame with Type of variation & gene of each SNP
+A data.frame with Type of variation
 }
 \description{
 A generic function to search the type of variation & gene
