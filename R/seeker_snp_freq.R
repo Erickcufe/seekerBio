@@ -128,9 +128,6 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   contents_request <- c(contents_request_first, contents_request_second)
   contents_request[sapply(contents_request, is.null)] <- NULL
 
-  contents_request <- contents_1[["result"]]
-
-
   mydf <- data.frame()
   for(i in 1:length(contents_request)){
 
