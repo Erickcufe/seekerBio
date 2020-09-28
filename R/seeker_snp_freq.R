@@ -114,6 +114,20 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
+  contents_request_first <- contents_1[["result"]]
+  contents_request_first[sapply(contents_request_first, is.null)] <- NULL
+
+  ID1 <- ID1[sapply(contents_request_first, is.null)]
+  ligas <- paste0(server,ID1,"?")
+  future::plan(multiprocess)
+  contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                .progress = FALSE)
+  contents_1 <- purrr::transpose(contents)
+  contents_request_second <- contents_1[["result"]]
+
+  contents_request <- c(contents_request_first, contents_request_second)
+  contents_request[sapply(contents_request, is.null)] <- NULL
+
   contents_request <- contents_1[["result"]]
 
 
@@ -140,6 +154,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     } else{
       next()
     }
+
 
 
   }
