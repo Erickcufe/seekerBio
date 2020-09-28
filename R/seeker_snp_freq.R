@@ -107,10 +107,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
-
-
   future::plan(multiprocess)
-
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
@@ -125,27 +122,21 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       if (length(pop)==0){
         next()
       }
-
       seleccion <- stringr::str_detect(pop$population, study)
-
       if (!is.null(pop) & length(pop[seleccion,1])!=0){
-
-
         pop_select <- pop[seleccion,]
-        # SNP <- c(rep(ID, length(pop[seleccion,])))
-
-        pop_result <- data.frame(SNP = ID1[i], pop_select)
+        pop_result <- data.frame(SNP = contents_request[[i]]$name,
+                                 pop_select)
         pop_result$submission_id <- NULL
-
         mydf <- rbind(mydf, pop_result)
       } else{
         next()
       }
     }
   } else {
-    ID1 <- ID1[sapply(contents_request_first, is.null)]
+    ID2 <- ID1[sapply(contents_request_first, is.null)]
     server <- "http://rest.ensembl.org/variation/human/"
-    ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
+    ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
     future::plan(multiprocess)
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
@@ -156,30 +147,22 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents_request[sapply(contents_request, is.null)] <- NULL
     mydf <- data.frame()
     for(i in 1:length(contents_request)){
-
       pop <- contents_request[[i]][["populations"]]
       if (length(pop)==0){
         next()
       }
-
       seleccion <- stringr::str_detect(pop$population, study)
-
       if (!is.null(pop) & length(pop[seleccion,1])!=0){
-
-
         pop_select <- pop[seleccion,]
-        # SNP <- c(rep(ID, length(pop[seleccion,])))
-
-        pop_result <- data.frame(SNP = ID1[i], pop_select)
+        pop_result <- data.frame(SNP = contents_request[[i]]$name,
+                                 pop_select)
         pop_result$submission_id <- NULL
-
         mydf <- rbind(mydf, pop_result)
       } else{
         next()
       }
     }
   }
-
   return(mydf)
 }
 
