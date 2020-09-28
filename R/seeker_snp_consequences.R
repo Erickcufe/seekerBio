@@ -84,7 +84,7 @@ seeker_snp_consequences.data.frame <- function(ID){
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   contents_request_first <- contents_1[["result"]]
-  contents_request_first[sapply(contents_request_first, is.null)] <- NULL
+  # contents_request_first[sapply(contents_request_first, is.null)] <- NULL
 
   ID1 <- ID1[sapply(contents_request_first, is.null)]
   ligas <- paste0(server,ID1,"?")
