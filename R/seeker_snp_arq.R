@@ -36,7 +36,7 @@
 #' @rdname seeker_snp_arq
 #' @export seeker_snp_arq
 seeker_snp_arq <- function(ID){
-  UseMethod("seeker_snp_arch")
+  UseMethod("seeker_snp_arq")
 }
 
 #' @return \code{NULL}
@@ -59,7 +59,7 @@ seeker_snp_arq.character <- function(ID){
   } else {
 
     df <- data.frame(gene = ID)
-    pop_result <- seeker_snp_arch(df)
+    pop_result <- seeker_snp_arq(df)
     return(pop_result)
 
   }
@@ -86,7 +86,7 @@ seeker_snp_arq.factor <- function(ID){
   } else {
 
     df <- data.frame(gene = ID)
-    pop_result <- seeker_snp_arch(df)
+    pop_result <- seeker_snp_arq(df)
     return(pop_result)
 
   }
