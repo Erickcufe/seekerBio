@@ -1,6 +1,6 @@
 #' seeker Single Nucleotide Polymorphism (SNP) arquitecture
 #'
-#' seeker_snp_arch is a generic function to obtain the genome arquitecture data of a given SNP
+#' seeker_snp_arq is a generic function to obtain the genome arquitecture data of a given SNP
 #'
 #' @param ID A Single Nucleotide Polymorphism (SNP) ID "rs" in character or data.frame
 #'
@@ -28,14 +28,14 @@
 #' https://rest.ensembl.org
 #'
 #' @examples
-#' seeker_snp_arch("rs56116432")
+#' seeker_snp_arq("rs56116432")
 #'
 #' df <- data.frame(c("rs56116432","rs10878307", "rs7133914", "rs11564148", "rs3761863", "rs10878245"))
-#' seeker_snp_arch(df)
+#' seeker_snp_arq(df)
 #'
-#' @rdname seeker_snp_arch
-#' @export seeker_snp_arch
-seeker_snp_arch <- function(ID){
+#' @rdname seeker_snp_arq
+#' @export seeker_snp_arq
+seeker_snp_arq <- function(ID){
   UseMethod("seeker_snp_arch")
 }
 
@@ -43,7 +43,7 @@ seeker_snp_arch <- function(ID){
 #'
 #' @rdname seeker_snp_arch
 #' @export
-seeker_snp_arch.character <- function(ID){
+seeker_snp_arq.character <- function(ID){
 
   # message(paste(Sys.time(), 'Running `seeker_snp_arch` for character'))
 
@@ -70,7 +70,7 @@ seeker_snp_arch.character <- function(ID){
 #'
 #' @rdname seeker_snp_arch
 #' @export
-seeker_snp_arch.factor <- function(ID){
+seeker_snp_arq.factor <- function(ID){
 
   # message(paste(Sys.time(), 'Running `seeker_snp_arch` for factor'))
 
@@ -97,37 +97,53 @@ seeker_snp_arch.factor <- function(ID){
 #'
 #' @rdname seeker_snp_arch
 #' @export
-seeker_snp_arch.data.frame <- function(ID){
+seeker_snp_arq.data.frame <- function(ID){
   # message(paste(Sys.time(), 'Running `seeker_snp_arch` for data.frame'))
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
-
-  future::plan(multiprocess)
-
+  future::plan("multiprocess")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
-  contents_request <- contents_1[["result"]]
-
-  mydf <- data.frame()
-
-  for (i in 1:length(contents_request)){
-
-    pop <- contents_request[[i]][["mappings"]]
-
-    if (length(pop)==0){
-      next()
+  contents_request_first <- contents_1[["result"]]
+  if(sum(!sapply(contents_1[["error"]], is.null)) == 0){
+    contents_request <- contents_1[["result"]]
+    mydf <- data.frame()
+    for (i in 1:length(contents_request)){
+      pop <- contents_request[[i]][["mappings"]]
+      if (length(pop)==0){
+        next()
+      }
+      if(!is.null(pop) & length(pop[,1])!=0){
+        pop_result <- data.frame(SNP = contents_request[[i]]$name, pop)
+        mydf <- rbind(mydf, pop_result)
+      } else {
+        next()
+      }
     }
-
-
-    if(!is.null(pop) & length(pop[,1])!=0){
-    pop_result <- data.frame(SNP = ID1[i], pop)
-    mydf <- rbind(mydf, pop_result)
-    } else {
-      next()
+  } else {
+    ID2 <- ID1[sapply(contents_request_first, is.null)]
+    server <- "http://rest.ensembl.org/variation/human/"
+    ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
+    future::plan(multiprocess)
+    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                  .progress = FALSE)
+    contents_1 <- purrr::transpose(contents)
+    contents_request_second <- contents_1[["result"]]
+    contents_request <- c(contents_request_first, contents_request_second)
+    for (i in 1:length(contents_request)){
+      pop <- contents_request[[i]][["mappings"]]
+      if (length(pop)==0){
+        next()
+      }
+      if(!is.null(pop) & length(pop[,1])!=0){
+        pop_result <- data.frame(SNP = contents_request[[i]]$name, pop)
+        mydf <- rbind(mydf, pop_result)
+      } else {
+        next()
+      }
     }
-
   }
 
   return(mydf)

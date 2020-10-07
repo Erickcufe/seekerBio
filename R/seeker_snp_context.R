@@ -106,7 +106,7 @@ seeker_snp_context.data.frame <- function(SNP){
   ligas_context <- paste0(server, SNPs,"?pops=1;content-type=application/json")
 
   # For context
-  future::plan(multiprocess)
+  future::plan("multiprocess")
   contents <- furrr::future_map(ligas_context, purrr::safely(jsonlite::fromJSON),
                                 .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
