@@ -132,6 +132,7 @@ seeker_snp_arq.data.frame <- function(ID){
     contents_1 <- purrr::transpose(contents)
     contents_request_second <- contents_1[["result"]]
     contents_request <- c(contents_request_first, contents_request_second)
+    mydf <- data.frame()
     for (i in 1:length(contents_request)){
       pop <- contents_request[[i]][["mappings"]]
       if (length(pop)==0){
