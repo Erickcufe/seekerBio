@@ -39,7 +39,7 @@ seeker_haploview <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
     stop("**Your SNP don´t have information in https://rest.ensembl.org, sorry**", call. = FALSE)
   }
 
-  variation_snp <- seekerBio::seeker_snp_arch(SNP)
+  variation_snp <- seekerBio::seeker_snp_arq(SNP)
 
   most_LD <- LD %>% dplyr::filter(r2 >= 0.6)
 
