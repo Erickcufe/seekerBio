@@ -43,8 +43,8 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
   if (length(LD)==0){
     stop("**Your SNP don´t have information in https://rest.ensembl.org, sorry**", call. = FALSE)
   }
-  variations_arch <- seekerBio::seeker_snp_arch(LD$variation2)
-  variation_snp <- seekerBio::seeker_snp_arch(SNP)
+  variations_arch <- seekerBio::seeker_snp_arq(LD$variation2)
+  variation_snp <- seekerBio::seeker_snp_arq(SNP)
 
   to_plot <- merge.data.frame(LD, variations_arch, by.x = "variation2",
                               by.y = "SNP")
