@@ -114,7 +114,12 @@ seeker_snp_context.data.frame <- function(SNP){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
-    contents_request_first <- contents_1[["result"]]
+    message(contents_1[["error"]][[1]])
+  }
+  while(sum(!sapply(contents_1[["result"]], is.null)) < length(SNPs)){
+    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                  .progress = FALSE)
+    contents_1 <- purrr::transpose(contents)
     message(contents_1[["error"]][[1]])
   }
   contents_request <- contents_1[["result"]]
