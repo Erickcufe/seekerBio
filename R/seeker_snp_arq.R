@@ -99,6 +99,7 @@ seeker_snp_arq.factor <- function(ID){
 #' @export
 seeker_snp_arq.data.frame <- function(ID){
   # message(paste(Sys.time(), 'Running `seeker_snp_arch` for data.frame'))
+  ID <- unique(ID)
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")

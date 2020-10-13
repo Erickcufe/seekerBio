@@ -104,6 +104,7 @@ seeker_snp_freq.factor <- function(ID, study = "1000GENOMES:phase_3"){
 #' @export
 seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   # message(paste(Sys.time(), 'Running `seeker_snp_freq` for data.frame'))
+  ID <- unique(ID)
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
