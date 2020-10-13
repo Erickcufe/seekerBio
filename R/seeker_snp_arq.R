@@ -145,6 +145,13 @@ seeker_snp_arq.data.frame <- function(ID){
       contents_request_first <- contents_1[["result"]]
       message(contents_1[["error"]][[1]])
     }
+    while(sum(!sapply(contents_1[["result"]], is.null)) < length(ID2)){
+      contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                    .progress = FALSE)
+      contents_1 <- purrr::transpose(contents)
+      contents_request_first <- contents_1[["result"]]
+      message(contents_1[["error"]][[1]])
+    }
     contents_request_second <- contents_1[["result"]]
     contents_request <- c(contents_request_first, contents_request_second)
     mydf <- data.frame()
