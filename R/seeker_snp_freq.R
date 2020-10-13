@@ -113,6 +113,14 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   contents_1 <- purrr::transpose(contents)
   contents_request_first <- contents_1[["result"]]
 
+  while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                  .progress = FALSE)
+    contents_1 <- purrr::transpose(contents)
+    contents_request_first <- contents_1[["result"]]
+    message(contents_1[["error"]][[1]])
+  }
+
   if(sum(!sapply(contents_1[["error"]], is.null)) == 0){
     contents_request <- contents_1[["result"]]
     mydf <- data.frame()
