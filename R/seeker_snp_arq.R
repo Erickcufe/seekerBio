@@ -106,7 +106,15 @@ seeker_snp_arq.data.frame <- function(ID){
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
+  while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+    contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                  .progress = FALSE)
+    contents_1 <- purrr::transpose(contents)
+    contents_request_first <- contents_1[["result"]]
+    message(contents_1[["error"]][[1]])
+  }
   contents_request_first <- contents_1[["result"]]
+
   if(sum(!sapply(contents_1[["error"]], is.null)) == 0){
     contents_request <- contents_1[["result"]]
     mydf <- data.frame()
@@ -130,6 +138,13 @@ seeker_snp_arq.data.frame <- function(ID){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
+    while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+      contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                    .progress = FALSE)
+      contents_1 <- purrr::transpose(contents)
+      contents_request_first <- contents_1[["result"]]
+      message(contents_1[["error"]][[1]])
+    }
     contents_request_second <- contents_1[["result"]]
     contents_request <- c(contents_request_first, contents_request_second)
     mydf <- data.frame()

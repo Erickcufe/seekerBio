@@ -111,8 +111,6 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
-  contents_request_first <- contents_1[["result"]]
-
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
@@ -120,6 +118,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents_request_first <- contents_1[["result"]]
     message(contents_1[["error"]][[1]])
   }
+  contents_request_first <- contents_1[["result"]]
 
   if(sum(!sapply(contents_1[["error"]], is.null)) == 0){
     contents_request <- contents_1[["result"]]
@@ -149,8 +148,14 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
+    while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+      contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                    .progress = FALSE)
+      contents_1 <- purrr::transpose(contents)
+      contents_request_first <- contents_1[["result"]]
+      message(contents_1[["error"]][[1]])
+    }
     contents_request_second <- contents_1[["result"]]
-
     contents_request <- c(contents_request_first, contents_request_second)
     contents_request[sapply(contents_request, is.null)] <- NULL
     mydf <- data.frame()
