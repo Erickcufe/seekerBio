@@ -98,7 +98,7 @@ seeker_snp_context.character <- function(SNP){
 seeker_snp_context.data.frame <- function(SNP){
 
   # message(paste(Sys.time(), 'Running `seeker_snp_context` for data.frame'))
-
+  SNPs <- unique(SNPs)
   SNPs <- as.matrix(SNP)
   URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
   ligas <- paste0(URL_dbSNP,SNPs)
