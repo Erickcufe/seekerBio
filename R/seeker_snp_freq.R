@@ -159,9 +159,12 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents_request_second <- contents_1[["result"]]
     ID3 <- ID2[sapply(contents_request_second, is.null)]
     if(length(ID3) > 1){
-      while(sum(!sapply(contents_1[["result"]], is.null)) < length(ID3)){
-        server <- "http://rest.ensembl.org/variation/human/"
-        ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+      ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+      future::plan("multiprocess")
+      contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                      .progress = FALSE)
+      contents_3 <- purrr::transpose(contents_2)
+      while(sum(!sapply(contents_3[["error"]], is.null)) > 0){
         future::plan("multiprocess")
         contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)

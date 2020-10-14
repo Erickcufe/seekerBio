@@ -120,7 +120,12 @@ seeker_snp_context.data.frame <- function(SNP){
   contents_request <- contents_1[["result"]]
   ID3 <- SNPs[sapply(contents_request, is.null)]
   if(length(ID3) > 1){
-    while(sum(!sapply(contents_1[["result"]], is.null)) < length(ID3)){
+    ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+    future::plan("multiprocess")
+    contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                    .progress = FALSE)
+    contents_3 <- purrr::transpose(contents_2)
+    while(sum(!sapply(contents_3[["error"]], is.null)) > 0){
       server <- "http://rest.ensembl.org/variation/human/"
       ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
       future::plan("multiprocess")
