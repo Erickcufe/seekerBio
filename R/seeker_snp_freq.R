@@ -113,6 +113,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+    future::plan("multiprocess")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -149,19 +150,31 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
     while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-      contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                    .progress = FALSE)
-      contents_1 <- purrr::transpose(contents)
-      message(contents_1[["error"]][[1]])
-    }
-    while(sum(!sapply(contents_1[["result"]], is.null)) < length(ID2)){
+      future::plan("multiprocess")
       contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                     .progress = FALSE)
       contents_1 <- purrr::transpose(contents)
       message(contents_1[["error"]][[1]])
     }
     contents_request_second <- contents_1[["result"]]
-    contents_request <- c(contents_request_first, contents_request_second)
+    ID3 <- ID2[sapply(contents_request_second, is.null)]
+    if(length(ID3) > 1){
+      while(sum(!sapply(contents_1[["result"]], is.null)) < length(ID3)){
+        server <- "http://rest.ensembl.org/variation/human/"
+        ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+        future::plan("multiprocess")
+        contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                      .progress = FALSE)
+        contents_3 <- purrr::transpose(contents_2)
+        message(contents_3[["error"]][[1]])
+      }
+      contents_3_request <-  contents_3[["result"]]
+      contents_request <- c(contents_request_first, contents_request_second,
+                            contents_3_request)
+    } else{
+      contents_request <- c(contents_request_first, contents_request_second)
+    }
+
     contents_request[sapply(contents_request, is.null)] <- NULL
     mydf <- data.frame()
     for(i in 1:length(contents_request)){
