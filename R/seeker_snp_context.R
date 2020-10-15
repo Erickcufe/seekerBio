@@ -98,8 +98,8 @@ seeker_snp_context.character <- function(SNP){
 seeker_snp_context.data.frame <- function(SNP){
 
   # message(paste(Sys.time(), 'Running `seeker_snp_context` for data.frame'))
-  SNPs <- unique(SNPs)
-  SNPs <- as.matrix(SNP)
+  SNPs <- unique(SNP)
+  SNPs <- as.matrix(SNPs)
   URL_dbSNP <- "https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/"
   ligas <- paste0(URL_dbSNP,SNPs)
   server <- "http://rest.ensembl.org/variation/human/"
@@ -108,7 +108,7 @@ seeker_snp_context.data.frame <- function(SNP){
   # For context
   future::plan("multiprocess")
   contents <- furrr::future_map(ligas_context, purrr::safely(jsonlite::fromJSON),
-                                .progress = TRUE)
+                                .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
     future::plan("multiprocess")
@@ -125,14 +125,10 @@ seeker_snp_context.data.frame <- function(SNP){
     contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                     .progress = FALSE)
     contents_3 <- purrr::transpose(contents_2)
-    while(sum(!sapply(contents_3[["error"]], is.null)) > 0){
-      server <- "http://rest.ensembl.org/variation/human/"
-      ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
-      future::plan("multiprocess")
-      contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                      .progress = FALSE)
-      contents_3 <- purrr::transpose(contents_2)
-      # message(contents_3[["error"]][[1]])
+    if(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
+      for(i in 1:length(contents_3[["error"]])){
+        message(ID3[i], contents_3[["error"]][[i]][["message"]])
+      }
     }
     contents_3_request <-  contents_3[["result"]]
     contents_request <- c(contents_request,

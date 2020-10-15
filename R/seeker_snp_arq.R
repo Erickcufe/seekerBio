@@ -139,13 +139,12 @@ seeker_snp_arq.data.frame <- function(ID){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
-    while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-      future::plan("multiprocess")
-      contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                    .progress = FALSE)
-      contents_1 <- purrr::transpose(contents)
-      # message(contents_1[["error"]][[1]])
+    if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+      for(i in 1:length(contents_1[["error"]])){
+        message(ID2[i], contents_1[["error"]][[i]][["message"]])
+      }
     }
+
     contents_request_second <- contents_1[["result"]]
     ID3 <- ID2[sapply(contents_request_second, is.null)]
     if(length(ID3) > 1){
@@ -154,12 +153,10 @@ seeker_snp_arq.data.frame <- function(ID){
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
       contents_3 <- purrr::transpose(contents_2)
-      while(sum(!sapply(contents_3[["error"]], is.null)) > 0){
-        future::plan("multiprocess")
-        contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                        .progress = FALSE)
-        contents_3 <- purrr::transpose(contents_2)
-        # message(contents_3[["error"]][[1]])
+      if(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
+        for(i in 1:length(contents_3[["error"]])){
+          message(ID3[i], contents_3[["error"]][[i]][["message"]])
+        }
       }
       contents_3_request <-  contents_3[["result"]]
       contents_request <- c(contents_request_first, contents_request_second,
