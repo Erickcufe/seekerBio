@@ -127,7 +127,7 @@ seeker_snp_context.data.frame <- function(SNP){
     contents_3 <- purrr::transpose(contents_2)
     if(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
       for(i in 1:length(contents_3[["error"]])){
-        message(ID3[i], contents_3[["error"]][[i]][["message"]])
+        message(paste(ID3[i], contents_3[["error"]][[i]][["message"]]))
       }
     }
     contents_3_request <-  contents_3[["result"]]

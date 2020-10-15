@@ -141,7 +141,7 @@ seeker_snp_arq.data.frame <- function(ID){
     contents_1 <- purrr::transpose(contents)
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
       for(i in 1:length(contents_1[["error"]])){
-        message(ID2[i], contents_1[["error"]][[i]][["message"]])
+        message(paste(ID2[i], contents_1[["error"]][[i]][["message"]]))
       }
     }
 
@@ -155,7 +155,7 @@ seeker_snp_arq.data.frame <- function(ID){
       contents_3 <- purrr::transpose(contents_2)
       if(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
         for(i in 1:length(contents_3[["error"]])){
-          message(ID3[i], contents_3[["error"]][[i]][["message"]])
+          message(paste(ID3[i], contents_3[["error"]][[i]][["message"]]))
         }
       }
       contents_3_request <-  contents_3[["result"]]
