@@ -145,17 +145,30 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     ID2 <- ID1[sapply(contents_request_first, is.null)]
     server <- "http://rest.ensembl.org/variation/human/"
     ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
-    future::plan(multiprocess)
+    future::plan("multiprocess")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-      for(i in 1:length(contents_1[["error"]])){
-        message(paste(ID2[i], contents_1[["error"]][[i]][["message"]]))
+      message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
+      while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+        future::plan("multiprocess")
+        contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                      .progress = FALSE)
+        contents_1 <- purrr::transpose(contents)
+        error_400 <- vector()
+        contents_1[sapply(contents_1[["error"]], is.null)] <- NULL
+        for(i in 1:length(contents_1[["error"]])){
+          error_400 <- c(error_400,contents_1[["error"]][[i]][["message"]] == "HTTP error 400.")
+        }
+        if(sum(error_400) >= length(contents_1[["error"]])/10){
+          break
+        }
       }
     }
+
     contents_request_second <- contents_1[["result"]]
-    ID3 <- ID2[sapply(contents_request_second, is.null)]
+    ID3 <- ID2[!error_400]
     if(length(ID3) > 1){
       ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
       future::plan("multiprocess")
@@ -163,8 +176,19 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
                                       .progress = FALSE)
       contents_3 <- purrr::transpose(contents_2)
       if(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
-        for(i in 1:length(contents_3[["error"]])){
-          message(paste(ID3[i], contents_3[["error"]][[i]][["message"]]))
+
+        while(sum(!sapply(contents_3[["error"]], is.null)) == length(contents_3[["error"]])){
+          contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                          .progress = FALSE)
+          contents_3 <- purrr::transpose(contents_2)
+          error_400 <- vector()
+          contents_3[sapply(contents_3[["error"]], is.null)] <- NULL
+          for(i in 1:length(contents_1[["error"]])){
+            error_400 <- c(error_400,contents_1[["error"]][[i]][["message"]] == "HTTP error 400.")
+          }
+          if(sum(error_400) >= 1){
+            break
+          }
         }
       }
       contents_3_request <-  contents_3[["result"]]
