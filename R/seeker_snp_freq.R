@@ -117,7 +117,6 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
-    # message(contents_1[["error"]][[1]])
   }
   contents_request_first <- contents_1[["result"]]
 
@@ -149,13 +148,19 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
+    contents_request_second <- contents_1[["result"]]
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+        ID_temp <- ID2[sapply(contents_temp, is.null)]
+        ligas <- paste0(server, ID_temp,"?pops=1;content-type=application/json")
         future::plan("multiprocess")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
         contents_1 <- purrr::transpose(contents)
+        contents_temp <- contents_1[["result"]]
+        # adding <- contents_temp[!sapply(contents_temp), is.null]
+        # catch_temp <- c(catch_temp, adding)
         error_400 <- vector()
         contents_1[sapply(contents_1[["error"]], is.null)] <- NULL
         for(i in 1:length(contents_1[["error"]])){
@@ -165,10 +170,10 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
           break
         }
       }
+      ID3 <- ID2[!error_400]
+    } else{
+      ID3 <- ID2[sapply(contents_request_second, is.null)]
     }
-
-    contents_request_second <- contents_1[["result"]]
-    ID3 <- ID2[!error_400]
     if(length(ID3) > 1){
       ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
       future::plan("multiprocess")
@@ -197,8 +202,8 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     } else{
       contents_request <- c(contents_request_first, contents_request_second)
     }
-
-        mydf <- data.frame()
+    contents_request[sapply(contents_request, is.null)] <- NULL
+    mydf <- data.frame()
     for(i in 1:length(contents_request)){
       pop <- contents_request[[i]][["populations"]]
       if (length(pop)==0){

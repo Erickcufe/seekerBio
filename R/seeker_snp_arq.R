@@ -49,7 +49,7 @@ seeker_snp_arq.character <- function(ID){
 
   if (length(ID)==1){
     server <- "http://rest.ensembl.org/variation/human/"
-    ligas <- paste0(server, ID,"?pops=1;content-type=application/json")
+    ligas <- paste0(server, ID,"?pops=0;content-type=application/json")
 
     r <- fromJSON(ligas)
     pop <- r[["mappings"]]
@@ -76,7 +76,7 @@ seeker_snp_arq.factor <- function(ID){
 
   if (length(ID)==1){
     server <- "http://rest.ensembl.org/variation/human/"
-    ligas <- paste0(server, ID,"?pops=1;content-type=application/json")
+    ligas <- paste0(server, ID,"?pops=0;content-type=application/json")
 
     r <- fromJSON(ligas)
     pop <- r[["mappings"]]
@@ -102,7 +102,7 @@ seeker_snp_arq.data.frame <- function(ID){
   ID <- unique(ID)
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
-  ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
+  ligas <- paste0(server, ID1,"?pops=0;content-type=application/json")
   future::plan("multiprocess")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
@@ -112,7 +112,6 @@ seeker_snp_arq.data.frame <- function(ID){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
-    # message(contents_1[["error"]][[1]])
   }
   contents_request_first <- contents_1[["result"]]
 
@@ -134,7 +133,7 @@ seeker_snp_arq.data.frame <- function(ID){
   } else {
     ID2 <- ID1[sapply(contents_request_first, is.null)]
     server <- "http://rest.ensembl.org/variation/human/"
-    ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
+    ligas <- paste0(server, ID2,"?pops=0;content-type=application/json")
     future::plan("multiprocess")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
@@ -142,10 +141,13 @@ seeker_snp_arq.data.frame <- function(ID){
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
+        ID_temp <- ID2[sapply(contents_temp, is.null)]
+        ligas <- paste0(server, ID_temp,"?pops=1;content-type=application/json")
         future::plan("multiprocess")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
         contents_1 <- purrr::transpose(contents)
+        contents_temp <- contents_1[["result"]]
         error_400 <- vector()
         contents_1[sapply(contents_1[["error"]], is.null)] <- NULL
         for(i in 1:length(contents_1[["error"]])){
@@ -155,12 +157,12 @@ seeker_snp_arq.data.frame <- function(ID){
           break
         }
       }
+      ID3 <- ID2[!error_400]
+    } else{
+      ID3 <- ID2[sapply(contents_request_second, is.null)]
     }
-
-    contents_request_second <- contents_1[["result"]]
-    ID3 <- ID2[!error_400]
     if(length(ID3) > 1){
-      ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+      ligas <- paste0(server, ID3,"?pops=0;content-type=application/json")
       future::plan("multiprocess")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
@@ -187,6 +189,7 @@ seeker_snp_arq.data.frame <- function(ID){
     } else{
       contents_request <- c(contents_request_first, contents_request_second)
     }
+    contents_request[sapply(contents_request, is.null)] <- NULL
     mydf <- data.frame()
     for (i in 1:length(contents_request)){
       pop <- contents_request[[i]][["mappings"]]
