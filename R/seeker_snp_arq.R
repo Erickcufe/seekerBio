@@ -138,11 +138,11 @@ seeker_snp_arq.data.frame <- function(ID){
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
+    contents_request_second <- contents_1[["result"]]
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-        ID_temp <- ID2[sapply(contents_temp, is.null)]
-        ligas <- paste0(server, ID_temp,"?pops=1;content-type=application/json")
+        ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
         future::plan("multiprocess")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
@@ -153,7 +153,7 @@ seeker_snp_arq.data.frame <- function(ID){
         for(i in 1:length(contents_1[["error"]])){
           error_400 <- c(error_400,contents_1[["error"]][[i]][["message"]] == "HTTP error 400.")
         }
-        if(sum(error_400) >= length(contents_1[["error"]])/10){
+        if(sum(error_400) >= length(contents_1[["error"]])/5){
           break
         }
       }

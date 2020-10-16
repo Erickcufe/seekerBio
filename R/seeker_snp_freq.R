@@ -152,21 +152,17 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     if(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-        ID_temp <- ID2[sapply(contents_temp, is.null)]
-        ligas <- paste0(server, ID_temp,"?pops=1;content-type=application/json")
+        ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
         future::plan("multiprocess")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
         contents_1 <- purrr::transpose(contents)
-        contents_temp <- contents_1[["result"]]
-        # adding <- contents_temp[!sapply(contents_temp), is.null]
-        # catch_temp <- c(catch_temp, adding)
         error_400 <- vector()
         contents_1[sapply(contents_1[["error"]], is.null)] <- NULL
         for(i in 1:length(contents_1[["error"]])){
           error_400 <- c(error_400,contents_1[["error"]][[i]][["message"]] == "HTTP error 400.")
         }
-        if(sum(error_400) >= length(contents_1[["error"]])/10){
+        if(sum(error_400) >= length(contents_1[["error"]])/5){
           break
         }
       }
@@ -199,9 +195,33 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       contents_3_request <-  contents_3[["result"]]
       contents_request <- c(contents_request_first, contents_request_second,
                             contents_3_request)
+      ID4 <- ID3[sapply(contents_3_request, is.null)]
+      ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+      future::plan("multiprocess")
+      contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                      .progress = FALSE)
+      contents_4 <- purrr::transpose(contents_2)
+      contents_4_request <-  contents_4[["result"]]
+      contents_request <- c(contents_request, contents_4_request)
     } else{
       contents_request <- c(contents_request_first, contents_request_second)
+      ID3 <- ID2[sapply(contents_request_second, is.null)]
+      ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+      future::plan("multiprocess")
+      contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                      .progress = FALSE)
+      contents_4 <- purrr::transpose(contents_2)
+      contents_4_request <-  contents_4[["result"]]
+      contents_request <- c(contents_request, contents_4_request)
     }
+    ID3 <- ID2[sapply(contents_4_request, is.null)]
+    ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
+    future::plan("multiprocess")
+    contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
+                                    .progress = FALSE)
+    contents_4 <- purrr::transpose(contents_2)
+    contents_4_request <-  contents_4[["result"]]
+    contents_request <- c(contents_request, contents_4_request)
     contents_request[sapply(contents_request, is.null)] <- NULL
     mydf <- data.frame()
     for(i in 1:length(contents_request)){
