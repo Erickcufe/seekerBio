@@ -166,7 +166,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
           break
         }
       }
-      ID3 <- ID2[!error_400]
+      ID3 <- ID2[sapply(contents_request_second, is.null)]
     } else{
       ID3 <- ID2[sapply(contents_request_second, is.null)]
     }
@@ -184,8 +184,8 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
           contents_3 <- purrr::transpose(contents_2)
           error_400 <- vector()
           contents_3[sapply(contents_3[["error"]], is.null)] <- NULL
-          for(i in 1:length(contents_1[["error"]])){
-            error_400 <- c(error_400,contents_1[["error"]][[i]][["message"]] == "HTTP error 400.")
+          for(i in 1:length(contents_3[["error"]])){
+            error_400 <- c(error_400,contents_3[["error"]][[i]][["message"]] == "HTTP error 400.")
           }
           if(sum(error_400) >= 1){
             break
@@ -195,7 +195,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       contents_3_request <-  contents_3[["result"]]
       contents_request <- c(contents_request_first, contents_request_second,
                             contents_3_request)
-      ID4 <- ID3[sapply(contents_3_request, is.null)]
+      ID4 <- ID3[!error_400]
       ligas <- paste0(server, ID4,"?pops=1;content-type=application/json")
       future::plan("multiprocess")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
@@ -214,7 +214,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       contents_4_request <-  contents_4[["result"]]
       contents_request <- c(contents_request, contents_4_request)
     }
-    ID3 <- ID2[sapply(contents_4_request, is.null)]
+    ID3 <- ID1[sapply(contents_request, is.null)]
     ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
     future::plan("multiprocess")
     contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
