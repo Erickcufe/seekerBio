@@ -79,7 +79,7 @@ seeker_snp_consequences.data.frame <- function(ID){
   ID1 <- as.matrix(ID)
   server <- "https://rest.ensembl.org/vep/human/id/"
   ligas <- paste0(server,ID1,"?")
-  future::plan(multiprocess)
+  future::plan("multiprocess")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
@@ -88,7 +88,7 @@ seeker_snp_consequences.data.frame <- function(ID){
 
   ID1 <- ID1[sapply(contents_request_first, is.null)]
   ligas <- paste0(server,ID1,"?")
-  future::plan(multiprocess)
+  future::plan("multiprocess")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
