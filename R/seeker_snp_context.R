@@ -74,7 +74,7 @@ seeker_snp_context.character <- function(SNP){
 
 
     # For context
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas_context, purrr::safely(jsonlite::fromJSON),
                                   .progress = TRUE)
     contents_1 <- purrr::transpose(contents)
@@ -102,12 +102,12 @@ seeker_snp_context.data.frame <- function(SNP){
   ligas <- paste0(URL_dbSNP,SNPs)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas_context <- paste0(server, SNPs,"?pops=0;content-type=application/json")
-  future::plan("multiprocess")
+  future::plan("multicore")
   contents <- furrr::future_map(ligas_context, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -116,7 +116,7 @@ seeker_snp_context.data.frame <- function(SNP){
   ID3 <- SNPs[sapply(contents_request, is.null)]
   if(length(ID3) > 1){
     ligas <- paste0(server, ID3,"?pops=0;content-type=application/json")
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                     .progress = FALSE)
     contents_3 <- purrr::transpose(contents_2)

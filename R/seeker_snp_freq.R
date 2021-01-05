@@ -108,12 +108,12 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
-  future::plan("multiprocess")
+  future::plan("multicore")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -144,7 +144,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     ID2 <- ID1[sapply(contents_request_first, is.null)]
     server <- "http://rest.ensembl.org/variation/human/"
     ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -153,7 +153,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
         ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
-        future::plan("multiprocess")
+        future::plan("multicore")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
         contents_1 <- purrr::transpose(contents)
@@ -172,7 +172,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     }
     if(length(ID3) > 1){
       ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
-      future::plan("multiprocess")
+      future::plan("multicore")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
       contents_3 <- purrr::transpose(contents_2)
@@ -197,7 +197,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
                             contents_3_request)
       ID4 <- ID3[!error_400]
       ligas <- paste0(server, ID4,"?pops=1;content-type=application/json")
-      future::plan("multiprocess")
+      future::plan("multicore")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
       contents_4 <- purrr::transpose(contents_2)
@@ -207,7 +207,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
       contents_request <- c(contents_request_first, contents_request_second)
       ID3 <- ID2[sapply(contents_request_second, is.null)]
       ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
-      future::plan("multiprocess")
+      future::plan("multicore")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
       contents_4 <- purrr::transpose(contents_2)
@@ -216,7 +216,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
     }
     ID3 <- ID1[sapply(contents_request, is.null)]
     ligas <- paste0(server, ID3,"?pops=1;content-type=application/json")
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                     .progress = FALSE)
     contents_4 <- purrr::transpose(contents_2)
