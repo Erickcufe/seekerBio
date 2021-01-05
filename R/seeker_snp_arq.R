@@ -103,12 +103,12 @@ seeker_snp_arq.data.frame <- function(ID){
   ID1 <- as.matrix(ID)
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID1,"?pops=0;content-type=application/json")
-  future::plan("multiprocess")
+  future::plan("multicore")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -134,7 +134,7 @@ seeker_snp_arq.data.frame <- function(ID){
     ID2 <- ID1[sapply(contents_request_first, is.null)]
     server <- "http://rest.ensembl.org/variation/human/"
     ligas <- paste0(server, ID2,"?pops=0;content-type=application/json")
-    future::plan("multiprocess")
+    future::plan("multicore")
     contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                   .progress = FALSE)
     contents_1 <- purrr::transpose(contents)
@@ -143,7 +143,7 @@ seeker_snp_arq.data.frame <- function(ID){
       message(paste("Web server error:", contents_1[["error"]][[1]][["message"]], "Please wait."))
       while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
         ligas <- paste0(server, ID2,"?pops=1;content-type=application/json")
-        future::plan("multiprocess")
+        future::plan("multicore")
         contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
         contents_1 <- purrr::transpose(contents)
@@ -163,7 +163,7 @@ seeker_snp_arq.data.frame <- function(ID){
     }
     if(length(ID3) > 1){
       ligas <- paste0(server, ID3,"?pops=0;content-type=application/json")
-      future::plan("multiprocess")
+      future::plan("multicore")
       contents_2 <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
                                       .progress = FALSE)
       contents_3 <- purrr::transpose(contents_2)
