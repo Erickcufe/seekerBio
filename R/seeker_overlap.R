@@ -48,7 +48,7 @@ seeker_overlap <- function(id){
 
 
 
-  future::plan("multiprocess")
+  future::plan("multicore")
   contents <- furrr::future_map(id_links, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)
   contents_1 <- purrr::transpose(contents)
