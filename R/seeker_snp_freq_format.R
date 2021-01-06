@@ -316,14 +316,15 @@ seeker_snp_freq_format <- function(data){
       }
       bb <- rbind(bb, pp)
     }
-    # ojo, volver a cambiar a seekerBio::seeker_snp_freq_format(bb)
-    data_for_three <- seekerBio::seeker_snp_freq_format(bb)
-    mydf_all <- rbind(mydf_all, data_for_three[[1]])
+    if(length(bb) > 0){
+      data_for_three <- seekerBio::seeker_snp_freq_format(bb)
+      mydf_all <- rbind(mydf_all, data_for_three[[1]])
+    }
+
     mydf_all <- list(Two_loci = mydf_all, Three_loci = bb_3)
   } else {
     mydf_all <- list(Two_loci = mydf_all)
   }
-
   # message(paste("You have",length(tres_alelos), "SNPs with 3 allel frequency"))
   return(mydf_all)
 
