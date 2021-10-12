@@ -122,21 +122,7 @@ seeker_snp_ld.data.frame <- function(ID, population = "1000GENOMES:phase_3:MXL",
   contents_1 <- purrr::transpose(contents)
   contents_request <- contents_1[["result"]]
 
-  mydf <- data.frame()
-  for(i in 1:length(URL_LD)){
-
-    if (length(contents_request[[i]])==0){
-      next()
-    }
-
-
-    if (!is.null(contents_request[[i]]) & length(contents_request[[i]]) !=0){
-
-      mydf <- rbind(mydf, contents_request[[i]])
-
-    }
-
-  }
+  mydf <- do.call(rbind.data.frame, contents_request)
 
   return(mydf)
 }
