@@ -67,7 +67,7 @@ seeker_snp_ld.character <- function(ID, population = "1000GENOMES:phase_3:MXL",
   return(r)
   } else {
     df <- data.frame(ID)
-    ld_result <- seeker_snp_ld(df)
+    ld_result <- seeker_snp_ld(df, population = population)
     return(ld_result)
   }
 }
