@@ -10,7 +10,8 @@ seeker_snp_ld_plot(
   window_size = 500,
   d_prime = 0,
   color_select = "cyan",
-  plot_all = TRUE
+  plot_all = TRUE,
+  r_2 = 0.25
 )
 }
 \arguments{

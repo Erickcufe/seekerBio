@@ -36,7 +36,7 @@
 #' @export seeker_snp_ld_plot
 seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
                                window_size = 500, d_prime = 0, color_select = "cyan",
-                               plot_all= TRUE) {
+                               plot_all= TRUE, r_2 = 0.25) {
 
   LD <- seekerBio::seeker_snp_ld(SNP, population = population_study)
 
@@ -63,7 +63,7 @@ seeker_snp_ld_plot <- function(SNP, population_study="1000GENOMES:phase_3:MXL",
     theme_minimal() + geom_area(aes(start), data=to_plot, alpha= 0.2,
                                 fill= color_select, color="black") +
     scale_color_gradient(low="green", high="red") +
-    ggrepel::geom_label_repel(aes(label=ifelse(r2>0.6,as.character(variation2),'')), box.padding= 0.2,
+    ggrepel::geom_label_repel(aes(label=ifelse(r2>=r_2,as.character(variation2),'')), box.padding= 0.2,
                               point.padding = 0.3,
                               segment.color = 'grey50') +
     theme(axis.text.x = element_text(angle = 60, hjust = 0.9, size = 20),
