@@ -20,7 +20,7 @@
 #' furrr future_map
 #'
 #' @importFrom
-#' future plan multiprocess
+#' future plan
 #'
 #' @author
 #' Erick Cuevas Fernández
@@ -115,7 +115,7 @@ seeker_gen_pathway.data.frame <- function(x) {
   informacion_Reactome <- paste(ID1, "/projection", sep = "", collapse = NULL)
   url_reactome <- file.path(server,informacion_Reactome, sep = "")
 
-  future::plan(multiprocess)
+  future::plan("multicore")
 
   contents <- furrr::future_map(url_reactome, purrr::safely(jsonlite::fromJSON),
                                 .progress = FALSE)

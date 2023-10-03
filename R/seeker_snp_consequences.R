@@ -21,7 +21,7 @@
 #' furrr future_map
 #'
 #' @importFrom
-#' future plan multiprocess
+#' future plan
 #'
 #'
 #' @examples

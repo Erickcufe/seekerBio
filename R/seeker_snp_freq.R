@@ -26,7 +26,7 @@
 #' furrr future_map
 #'
 #' @importFrom
-#' future plan multiprocess
+#' future plan
 #'
 #' @examples
 #' seeker_snp_freq("rs56116432")
