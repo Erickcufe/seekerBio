@@ -71,13 +71,17 @@ seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
 
   } else {
 
-    pop_result <- lapply(ID, seeker_snp_freq.character)
-    pop_result[sapply(pop_result, is.null)] <- NULL
-    df_tmp <- data.frame()
-    for (i in 1:length(pop_result)) {
-      df_tmp <- rbind(df_tmp, pop_result[[i]])
-    }
-    return(df_tmp)
+    contents <- purrr::map(ID, purrr::safely(seekerBio::seeker_snp_freq),
+                           .progress = FALSE)
+    contents_1 <- purrr::transpose(contents)
+    contents_request_second <- contents_1[["result"]]
+    # pop_result <- lapply(ID, seeker_snp_freq.character)
+    # pop_result[sapply(pop_result, is.null)] <- NULL
+    # df_tmp <- data.frame()
+    # for (i in 1:length(pop_result)) {
+    #   df_tmp <- rbind(df_tmp, pop_result[[i]])
+    # }
+    return(contents_request_second)
 
   }
 }
