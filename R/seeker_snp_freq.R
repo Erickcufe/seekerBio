@@ -51,20 +51,33 @@ seeker_snp_freq.character <- function(ID, study = "1000GENOMES:phase_3"){
   server <- "http://rest.ensembl.org/variation/human/"
   ligas <- paste0(server, ID,"?pops=1;content-type=application/json")
 
-    r <- fromJSON(ligas)
+    r <-  jsonlite::fromJSON(ligas)
     pop <- r[["populations"]]
-
     seleccion <- stringr::str_detect(pop$population, study)
-    SNP <- c(rep(ID, length(pop[seleccion,])))
-    pop_result <- cbind(SNP = ID, pop[seleccion,])
-    pop_result$submission_id <- NULL
+    if(sum(seleccion) > 0){
+      SNP <- c(rep(ID, length(pop[seleccion,])))
+      pop_result <- data.frame(SNP = ID, pop[seleccion,])
+      pop_result$submission_id <- NULL
+      print(ID)
+      return(pop_result)
+    }
+    # else{
+    #   SNP <- c(rep(ID, length(pop[seleccion,])))
+    #   pop_result <- data.frame(SNP = ID, pop[seleccion,])
+    #   pop_result$submission_id <- NULL
+    #
+    #   return(pop_result)
+    # }
 
-  return(pop_result)
   } else {
 
-    df <- data.frame(gene = ID)
-    pop_result <- seeker_snp_freq(df)
-    return(pop_result)
+    pop_result <- lapply(ID, seeker_snp_freq.character)
+    pop_result[sapply(pop_result, is.null)] <- NULL
+    df_tmp <- data.frame()
+    for (i in 1:length(pop_result)) {
+      df_tmp <- rbind(df_tmp, pop_result[[i]])
+    }
+    return(df_tmp)
 
   }
 }
@@ -110,7 +123,7 @@ seeker_snp_freq.data.frame <- function(ID, study = "1000GENOMES:phase_3"){
   ligas <- paste0(server, ID1,"?pops=1;content-type=application/json")
   future::plan("multicore")
   contents <- furrr::future_map(ligas, purrr::safely(jsonlite::fromJSON),
-                                .progress = FALSE)
+                                .progress = TRUE)
   contents_1 <- purrr::transpose(contents)
   while(sum(!sapply(contents_1[["error"]], is.null)) == length(contents_1[["error"]])){
     future::plan("multicore")
